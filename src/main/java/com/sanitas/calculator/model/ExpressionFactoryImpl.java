@@ -2,21 +2,19 @@ package com.sanitas.calculator.model;
 
 import com.sanitas.calculator.model.core.Expression;
 import com.sanitas.calculator.model.core.ExpressionFactory;
-import org.springframework.stereotype.Component;
 
 import static com.sanitas.calculator.util.Constants.*;
 
-@Component
-public class ExpressionFactoryImpl<String> implements ExpressionFactory{
+public class ExpressionFactoryImpl implements ExpressionFactory<String,Long>{
 
     @Override
-    public <T> Expression getExpresion(final T token) {
-        switch (token.toString()) {
+    public Expression getExpresion(final String token) {
+        switch (token) {
             case SUM_SIGN: return new AddExpression();
             case MINUS_SIGN: return new SubtractExpression();
             case MULTI_SIGN: return new MultiplyExpression();
             case DIV_SIGN: return new DivideExpression();
-            default: return new OperandExpression(Long.parseLong(token.toString()));
+            default: return new OperandExpression(Long.parseLong(token));
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.sanitas.calculator.model;
 
-public class DivideExpression extends AbstractBinaryOperation{
+import com.sanitas.calculator.model.core.AbstractBinaryOperation;
+
+public class DivideExpression extends AbstractBinaryOperation<Long>{
     @Override
     protected Long execute(final Long a, final Long b) { return a/b;}
 }

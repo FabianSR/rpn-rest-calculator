@@ -4,14 +4,12 @@ import com.sanitas.calculator.model.core.Expression;
 
 import java.util.Stack;
 
-public class OperandExpression implements Expression {
-    private Long value;
-
-    public OperandExpression(final Long value){
-        this.value=value;
+public class OperandExpression<T extends Number> implements Expression<T> {
+    private T value;
+    public OperandExpression(final T value) {this.value = value;
     }
     @Override
-    public void interpret(Stack<Long> context) {
+    public void interpret(Stack<T> context) {
         context.push(value);
     }
 }

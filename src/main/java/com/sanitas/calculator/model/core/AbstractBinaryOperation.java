@@ -1,4 +1,4 @@
-package com.sanitas.calculator.model;
+package com.sanitas.calculator.model.core;
 
 import com.sanitas.calculator.model.core.Expression;
 
@@ -8,7 +8,7 @@ import java.util.Stack;
  * Template Method parttern
  * @autor FabianSR
  */
-public abstract class AbstractBinaryOperation implements Expression {
+public abstract class AbstractBinaryOperation<T extends Number> implements Expression<T> {
 
     /**
      * This pulls the two operands (from the stack) on which the operator will execute.
@@ -19,14 +19,14 @@ public abstract class AbstractBinaryOperation implements Expression {
      * @param context
      */
     @Override
-    public final void interpret(Stack<Long> context) {
-        Long tmp = context.pop();
-        context.push(execute(context.pop(),tmp));
+    public final void interpret(Stack<T> context) {
+        T tmp = (T) context.pop();
+        context.push(execute(((T)context.pop()),tmp));
     }
 
     /**
      * Applies the operator corresponding to the operands' a 'and 'b'.
      * Each concrete implementation corresponds to an operation.
      */
-    protected abstract Long execute(final Long a, final Long b);
+    protected abstract T execute(final T a, final T b);
 }

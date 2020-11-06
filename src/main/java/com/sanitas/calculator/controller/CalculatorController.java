@@ -19,7 +19,7 @@ public class CalculatorController {
     }
 
     @RequestMapping(value = VERSION+"/evaluation", method = POST)
-    public Long calculate(final @RequestBody String in) {
+    public String calculate(final @RequestBody String in) {
         return calculatorService.process(in);
     }
 }

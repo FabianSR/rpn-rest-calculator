@@ -4,6 +4,7 @@ import com.sanitas.calculator.model.core.ExpressionFactory;
 import com.sanitas.calculator.util.Constants;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -13,7 +14,7 @@ public class ExpressionFactoryImplTest {
 
     @Before
     public void setUp(){
-        expressionFactory = new ExpressionFactoryImpl<>();
+        expressionFactory = new ExpressionFactoryImpl();
     }
 
     @Test
@@ -46,6 +47,14 @@ public class ExpressionFactoryImplTest {
         //When
         //Then
         assertThat(expressionFactory.getExpresion(Constants.DIV_SIGN) instanceof DivideExpression,is(true));
+
+    }
+    @Test
+    public void getExpresion_withNumericCharacter_shouldRestunOperandExpression(){
+        //Given
+        //When
+        //Then
+        assertThat(expressionFactory.getExpresion("7") instanceof OperandExpression,is(true));
 
     }
 }

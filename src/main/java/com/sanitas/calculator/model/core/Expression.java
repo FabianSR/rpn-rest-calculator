@@ -2,6 +2,10 @@ package com.sanitas.calculator.model.core;
 
 import java.util.Stack;
 
-public interface Expression {
-    void interpret(final Stack<Long> context);
+/**
+ * @autor FabianSR
+ * @param <T>
+ */
+public interface Expression<T extends Number> {
+    void interpret(final Stack<T> context);
 }

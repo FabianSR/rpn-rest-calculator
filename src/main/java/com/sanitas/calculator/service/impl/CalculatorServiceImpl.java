@@ -16,8 +16,6 @@ import static com.sanitas.calculator.util.Constants.BLANK_STR;
 @Service
 public class CalculatorServiceImpl implements CalculatorService {
 
-    //private TracerImpl tracer = Logger.getTracer();
-
     private final ExpressionFactory expressionFactory;
 
     @Autowired
@@ -25,15 +23,13 @@ public class CalculatorServiceImpl implements CalculatorService {
         this.expressionFactory = expressionFactory;
     }
     @Override
-    public Long process(final String expression) {
-        return evaluate(Stream.of(expression.split(BLANK_STR)).map(expressionFactory::getExpresion).collect(Collectors.toList()));
+    public String process(final String input) {
+        return evaluate(Stream.of(input.split(BLANK_STR)).map(s-> expressionFactory.getExpresion(s)).collect(Collectors.toList()));
     }
 
-    private Long evaluate(final List<Expression> parsedExpression) {
+    private String evaluate(final List<Expression> parsedExpression) {
         final Stack<Long> contextResults = new Stack<>();
         parsedExpression.forEach(e -> e.interpret(contextResults));
-        final Long result = contextResults.pop();
-        //tracer.trace(result);
-        return result;
+        return contextResults.pop().toString();
     }
 }

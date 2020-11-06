@@ -2,9 +2,7 @@ package com.sanitas.calculator.service.impl;
 
 
 import com.sanitas.calculator.model.*;
-import com.sanitas.calculator.model.core.Expression;
 import com.sanitas.calculator.model.core.ExpressionFactory;
-import com.sanitas.calculator.service.CalculatorService;
 import com.sanitas.calculator.util.Constants;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +12,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 public class CalculatorServiceImplTest {
@@ -41,9 +39,9 @@ public class CalculatorServiceImplTest {
         //Given
         when(expressionFactory.getExpresion(Constants.SUM_SIGN)).thenReturn( new AddExpression());
         //When
-        Long result = calculatorService.process("2 3 +");
+        String result = calculatorService.process("2 3 +");
         //Then
-        assertThat(result, is(equalTo(5l)));
+        assertThat(result, is(equalTo("5")));
     }
 
     @Test
@@ -51,9 +49,9 @@ public class CalculatorServiceImplTest {
         //Given
         when(expressionFactory.getExpresion(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
         //When
-        Long result = calculatorService.process("2 3 -");
+        String result = calculatorService.process("2 3 -");
         //Then
-        assertThat(result, is(equalTo(-1l)));
+        assertThat(result, is(equalTo("-1")));
     }
 
     @Test
@@ -61,9 +59,9 @@ public class CalculatorServiceImplTest {
         //Given
         when(expressionFactory.getExpresion(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
         //When
-        Long result = calculatorService.process("2 3 *");
+        String result = calculatorService.process("2 3 *");
         //Then
-        assertThat(result, is(equalTo(6l)));
+        assertThat(result, is(equalTo("6")));
     }
 
     @Test
@@ -71,9 +69,9 @@ public class CalculatorServiceImplTest {
         //Given
         when(expressionFactory.getExpresion(Constants.DIV_SIGN)).thenReturn(new DivideExpression());
         //When
-        Long result = calculatorService.process("2 3 /");
+        String result = calculatorService.process("2 3 /");
         //Then
-        assertThat(result, is(equalTo(0l)));
+        assertThat(result, is(equalTo("0")));
     }
 
     @Test
@@ -82,9 +80,9 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpresion(Constants.SUM_SIGN)).thenReturn(new AddExpression());
         when(expressionFactory.getExpresion(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
         //When
-        Long result = calculatorService.process("2 3 + 8 -");
+        String result = calculatorService.process("2 3 + 8 -");
         //Then
-        assertThat(result, is(equalTo(-3l)));
+        assertThat(result, is(equalTo("-3")));
     }
 
     @Test
@@ -95,8 +93,8 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpresion(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
         when(expressionFactory.getExpresion(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
         //When
-        Long result = calculatorService.process("2 3 + 8 - 5 2 * *");
+        String result = calculatorService.process("2 3 + 8 - 5 2 * *");
         //Then
-        assertThat(result, is(equalTo(-30l)));
+        assertThat(result, is(equalTo("-30")));
     }
 }
