@@ -1,6 +1,5 @@
 package com.sanitas.calculator;
 
-import com.sanitas.calculator.model.ExpressionFactoryImpl;
 import com.sanitas.calculator.model.core.ExpressionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,6 @@ public class CalculatorConfig {
      */
     @Bean
     public ExpressionFactory getExpressionFactory() {
-        return new ExpressionFactoryImpl();
+        return new com.sanitas.calculator.model.domain.bigdecimalexmaple.ExpressionFactoryImpl();
     }
 }

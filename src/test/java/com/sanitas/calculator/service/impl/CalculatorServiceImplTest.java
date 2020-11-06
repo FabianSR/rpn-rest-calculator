@@ -1,8 +1,12 @@
 package com.sanitas.calculator.service.impl;
 
 
-import com.sanitas.calculator.model.*;
 import com.sanitas.calculator.model.core.ExpressionFactory;
+import com.sanitas.calculator.model.core.OperandExpression;
+import com.sanitas.calculator.model.domain.integer.AddExpression;
+import com.sanitas.calculator.model.domain.integer.DivideExpression;
+import com.sanitas.calculator.model.domain.integer.MultiplyExpression;
+import com.sanitas.calculator.model.domain.integer.SubtractExpression;
 import com.sanitas.calculator.util.Constants;
 import org.junit.Before;
 import org.junit.Test;

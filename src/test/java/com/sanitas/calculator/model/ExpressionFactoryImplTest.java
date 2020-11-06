@@ -1,6 +1,8 @@
 package com.sanitas.calculator.model;
 
 import com.sanitas.calculator.model.core.ExpressionFactory;
+import com.sanitas.calculator.model.core.OperandExpression;
+import com.sanitas.calculator.model.domain.integer.*;
 import com.sanitas.calculator.util.Constants;
 import org.junit.Before;
 import org.junit.Test;

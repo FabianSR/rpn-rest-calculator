@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Stack;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.of;
 
 import static com.sanitas.calculator.util.Constants.BLANK_STR;
 
@@ -24,12 +24,12 @@ public class CalculatorServiceImpl implements CalculatorService {
     }
     @Override
     public String process(final String input) {
-        return evaluate(Stream.of(input.split(BLANK_STR)).map(s-> expressionFactory.getExpresion(s)).collect(Collectors.toList()));
+        return evaluate(of(input.split(BLANK_STR)).map(s-> expressionFactory.getExpresion(s)).collect(toList()));
     }
 
-    private String evaluate(final List<Expression> parsedExpression) {
-        final Stack<Long> contextResults = new Stack<>();
-        parsedExpression.forEach(e -> e.interpret(contextResults));
+    private String evaluate(final List<Expression> parsedExpressions) {
+        final Stack<Number> contextResults = new Stack<>();
+        parsedExpressions.forEach(e -> e.interpret(contextResults));
         return contextResults.pop().toString();
     }
 }
