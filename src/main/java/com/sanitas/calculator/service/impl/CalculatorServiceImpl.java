@@ -19,7 +19,7 @@ public class CalculatorServiceImpl implements CalculatorService {
     private Expression getExpression(final String token){
         switch (token) {
             case "+": return new AddExpression();
-            case "-": return new SubstractExpression();
+            case "-": return new SubtractExpression();
             case "*": return new MultiplyExpression();
             case "/": return new DivideExpression();
             default: return new OperandExpression(Long.parseLong(token));

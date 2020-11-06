@@ -1,11 +1,6 @@
 package com.sanitas.calculator.model;
 
-import java.util.Stack;
-
-public class DivideExpression implements Expression{
+public class DivideExpression extends AbstractBinaryOperation{
     @Override
-    public void interpret(Stack<Long> context) {
-        Long tmp = context.pop();
-        context.push(context.pop()/tmp);
-    }
+    protected Long execute(final Long a, final Long b) { return a/b;}
 }

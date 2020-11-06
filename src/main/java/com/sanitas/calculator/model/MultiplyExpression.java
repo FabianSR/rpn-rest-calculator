@@ -1,10 +1,6 @@
 package com.sanitas.calculator.model;
 
-import java.util.Stack;
-
-public class MultiplyExpression implements Expression{
+public class MultiplyExpression extends AbstractBinaryOperation{
     @Override
-    public void interpret(Stack<Long> context) {
-        context.push(context.pop()*context.pop());
-    }
+    protected Long execute(final Long a, final Long b) { return a*b;}
 }

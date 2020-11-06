@@ -28,7 +28,7 @@ public class CalculatorServiceImplTest {
     }
 
     @Test
-    public void evaluate_expressionSubstractWithOperands_shouldReturnResultEvaluation() {
+    public void evaluate_expressionactWithOperands_shouldReturnResultEvaluation() {
         //Given
         //When
         Long result = calculatorService.process("2 3 -");
@@ -56,4 +56,24 @@ public class CalculatorServiceImplTest {
         assertThat(result, is(equalTo(0l)));
     }
 
+    @Test
+    public void evaluate_combinedAddAndSubtractExpressionWithOperands_shouldReturnResultEvaluation() {
+        //Given
+        //When
+        Long result = calculatorService.process("2 3 + 8 -");
+        //Then
+        //TO-DO
+        assertThat(result, is(equalTo(-3l)));
+    }
+
+    @Test
+    public void evaluate_combinedExpressionWithOperands_shouldReturnResultEvaluation() {
+        //Given
+        // 2 3 + 8 - 5 2 * * -> (2+3-8)*(5*2)
+        //When
+        Long result = calculatorService.process("2 3 + 8 - 5 2 * *");
+        //Then
+        //TO-DO
+        assertThat(result, is(equalTo(-30l)));
+    }
 }
