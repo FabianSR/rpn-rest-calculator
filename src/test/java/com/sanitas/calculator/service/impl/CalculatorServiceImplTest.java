@@ -5,11 +5,11 @@ import com.sanitas.calculator.service.CalculatorService;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 public class CalculatorServiceImplTest {
-
 
     private CalculatorService calculatorService;
 
@@ -19,12 +19,41 @@ public class CalculatorServiceImplTest {
     }
 
     @Test
-    public void evaluate_expressionAddWithOperands_souldReturnResultEvaluation() {
+    public void evaluate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
         //When
-        String result = calculatorService.evaluate("2+3");
+        Long result = calculatorService.process("2 3 +");
+        //Then
+        assertThat(result, is(equalTo(5l)));
+    }
+
+    @Test
+    public void evaluate_expressionSubstractWithOperands_shouldReturnResultEvaluation() {
+        //Given
+        //When
+        Long result = calculatorService.process("2 3 -");
+        //Then
+        assertThat(result, is(equalTo(-1l)));
+    }
+
+    @Test
+    public void evaluate_expressionMultiplyWithOperands_shouldReturnResultEvaluation() {
+        //Given
+        //When
+        Long result = calculatorService.process("2 3 *");
         //Then
         //TO-DO
-        assertThat(result, nullValue());
+        assertThat(result, is(equalTo(6l)));
     }
+
+    @Test
+    public void evaluate_expressionDivideWithOperands_shouldReturnResultEvaluation() {
+        //Given
+        //When
+        Long result = calculatorService.process("2 3 /");
+        //Then
+        //TO-DO
+        assertThat(result, is(equalTo(0l)));
+    }
+
 }
