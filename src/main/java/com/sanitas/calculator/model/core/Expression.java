@@ -1,4 +1,4 @@
-package com.sanitas.calculator.model;
+package com.sanitas.calculator.model.core;
 
 import java.util.Stack;
 

@@ -1,12 +1,14 @@
 package com.sanitas.calculator.model;
 
+import com.sanitas.calculator.model.core.Expression;
+
 import java.util.Stack;
 
 /**
  * Template Method parttern
  * @autor FabianSR
  */
-public abstract class AbstractBinaryOperation implements Expression{
+public abstract class AbstractBinaryOperation implements Expression {
 
     /**
      * This pulls the two operands (from the stack) on which the operator will execute.
