@@ -42,10 +42,10 @@ public class AspectControlLogger {
         try {
             response = printLog("business method : %s; input : %s ; response: %s", joinPoint);
         } catch (NumberFormatException | EmptyStackException e) {
-            Logger.getTracerInstance().trace(e);
+            Logger.getLoggerInstance().getTracer().trace(e);
             response = e instanceof NumberFormatException ? NOT_NUMERIC_OPERAND : EXPRESSION_IS_NOT_COMPLETE;
         } catch (Throwable t) {
-            Logger.getTracerInstance().trace(t);;
+            Logger.getLoggerInstance().getTracer().trace(t);;
             response = ERROR;
         }
         return response;
@@ -58,7 +58,7 @@ public class AspectControlLogger {
 
     private Object printLog(final String message, final ProceedingJoinPoint joinPoint) throws Throwable {
         final Object response = joinPoint.proceed();
-        Logger.getTracerInstance().trace(String.format(message, joinPoint.getSignature().getName(), asList(joinPoint.getArgs()).stream().map(Object::toString).collect(joining()), response));
+        Logger.getLoggerInstance().getTracer().trace(String.format(message, joinPoint.getSignature().getName(), asList(joinPoint.getArgs()).stream().map(Object::toString).collect(joining()), response));
         return response;
     }
 }

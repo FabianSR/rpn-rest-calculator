@@ -15,13 +15,14 @@ public final class Logger {
         this.tracer = tracer;
     }
 
-    public static TracerImpl getTracerInstance() {
+    public static Logger getLoggerInstance() {
         if (logger == null) buildIntance();
-        return logger.tracer;
+        return logger;
     }
 
     private synchronized static void buildIntance() {
         if (logger == null) logger = new Logger(new TracerImpl());
     }
 
+    public TracerImpl getTracer() { return tracer; }
 }
