@@ -20,43 +20,43 @@ public class ExpressionFactoryImplTest {
     }
 
     @Test
-    public void getExpresion_withSumSign_shouldRestunAddExpression(){
+    public void getExpression_withSumSign_shouldRestunAddExpression(){
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpresion(Constants.SUM_SIGN) instanceof AddExpression,is(true));
+        assertThat(expressionFactory.getExpression(Constants.SUM_SIGN) instanceof AddExpression,is(true));
 
     }
     @Test
-    public void getExpresion_withMinuSign_shouldRestunSubtractExpression(){
+    public void getExpression_withMinuSign_shouldRestunSubtractExpression(){
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpresion(Constants.MINUS_SIGN) instanceof SubtractExpression,is(true));
+        assertThat(expressionFactory.getExpression(Constants.MINUS_SIGN) instanceof SubtractExpression,is(true));
 
     }
     @Test
-    public void getExpresion_withMultiSign_shouldRestunMultiExpression(){
+    public void getExpression_withMultiSign_shouldRestunMultiExpression(){
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpresion(Constants.MULTI_SIGN) instanceof MultiplyExpression,is(true));
+        assertThat(expressionFactory.getExpression(Constants.MULTI_SIGN) instanceof MultiplyExpression,is(true));
 
     }
     @Test
-    public void getExpresion_withDivSign_shouldRestunDivideExpression(){
+    public void getExpression_withDivSign_shouldRestunDivideExpression(){
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpresion(Constants.DIV_SIGN) instanceof DivideExpression,is(true));
+        assertThat(expressionFactory.getExpression(Constants.DIV_SIGN) instanceof DivideExpression,is(true));
 
     }
     @Test
-    public void getExpresion_withNumericCharacter_shouldRestunOperandExpression(){
+    public void getExpression_withNumericCharacter_shouldRestunOperandExpression(){
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpresion("7") instanceof OperandExpression,is(true));
+        assertThat(expressionFactory.getExpression("7") instanceof OperandExpression,is(true));
 
     }
 }

@@ -11,7 +11,7 @@ import static com.sanitas.calculator.util.Constants.*;
 public class ExpressionFactoryImpl implements ExpressionFactory<String, BigDecimal>{
 
     @Override
-    public Expression<BigDecimal> getExpresion(final String token) {
+    public Expression<BigDecimal> getExpression(final String token) {
         switch (token) {
             case SUM_SIGN: return new AddExpression();
             case MINUS_SIGN: return new SubtractExpression();

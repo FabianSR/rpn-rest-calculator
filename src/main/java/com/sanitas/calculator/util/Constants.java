@@ -10,4 +10,7 @@ public final class Constants {
 
     private Constants(){}
 
+    public static final String ERROR = "ERROR";
+    public static final String NOT_NUMERIC_OPERAND = "NOT NUMERIC OPERAND";
+    public static final String EXPRESSION_IS_NOT_COMPLETE = "EXPRESSION IS NOT COMPLETE";
 }

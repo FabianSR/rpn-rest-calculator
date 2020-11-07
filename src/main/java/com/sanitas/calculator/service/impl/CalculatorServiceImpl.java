@@ -3,6 +3,7 @@ package com.sanitas.calculator.service.impl;
 import com.sanitas.calculator.model.core.Expression;
 import com.sanitas.calculator.model.core.ExpressionFactory;
 import com.sanitas.calculator.service.CalculatorService;
+import com.sanitas.calculator.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +25,12 @@ public class CalculatorServiceImpl implements CalculatorService {
     }
     @Override
     public String process(final String input) {
-        return evaluate(of(input.split(BLANK_STR)).map(s-> expressionFactory.getExpresion(s)).collect(toList()));
+        return evaluate(of(input.split(BLANK_STR)).map(s-> expressionFactory.getExpression(s)).collect(toList()));
     }
 
     private String evaluate(final List<Expression> parsedExpressions) {
         final Stack<Number> contextResults = new Stack<>();
         parsedExpressions.forEach(e -> e.interpret(contextResults));
-        return contextResults.pop().toString();
+        return contextResults.size()>1? Constants.EXPRESSION_IS_NOT_COMPLETE:contextResults.pop().toString();
     }
 }

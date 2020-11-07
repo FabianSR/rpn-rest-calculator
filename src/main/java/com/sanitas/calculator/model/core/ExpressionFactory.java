@@ -5,5 +5,5 @@ package com.sanitas.calculator.model.core;
  * @autor FabianSR
  */
 public interface ExpressionFactory<Q,T extends Number> {
-    Expression<T> getExpresion(final Q q);
+    Expression<T> getExpression(final Q q);
 }

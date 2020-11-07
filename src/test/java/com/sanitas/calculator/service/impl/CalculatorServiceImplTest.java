@@ -34,14 +34,14 @@ public class CalculatorServiceImplTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         IntStream.range(0,10).boxed().forEach(s->{
-            when(expressionFactory.getExpresion(s.toString())).thenReturn( new OperandExpression(Long.parseLong(s.toString())));
+            when(expressionFactory.getExpression(s.toString())).thenReturn( new OperandExpression(Long.parseLong(s.toString())));
         });
     }
 
     @Test
     public void evaluate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpresion(Constants.SUM_SIGN)).thenReturn( new AddExpression());
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn( new AddExpression());
         //When
         String result = calculatorService.process("2 3 +");
         //Then
@@ -51,7 +51,7 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_expressionactWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpresion(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
         //When
         String result = calculatorService.process("2 3 -");
         //Then
@@ -61,7 +61,7 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_expressionMultiplyWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpresion(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
+        when(expressionFactory.getExpression(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
         //When
         String result = calculatorService.process("2 3 *");
         //Then
@@ -71,7 +71,7 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_expressionDivideWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpresion(Constants.DIV_SIGN)).thenReturn(new DivideExpression());
+        when(expressionFactory.getExpression(Constants.DIV_SIGN)).thenReturn(new DivideExpression());
         //When
         String result = calculatorService.process("2 3 /");
         //Then
@@ -81,8 +81,8 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_combinedAddAndSubtractExpressionWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpresion(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpresion(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
         //When
         String result = calculatorService.process("2 3 + 8 -");
         //Then
@@ -93,9 +93,9 @@ public class CalculatorServiceImplTest {
     public void evaluate_combinedExpressionWithOperands_shouldReturnResultEvaluation() {
         //Given
         // 2 3 + 8 - 5 2 * * -> (2+3-8)*(5*2)
-        when(expressionFactory.getExpresion(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpresion(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
-        when(expressionFactory.getExpresion(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        when(expressionFactory.getExpression(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
         //When
         String result = calculatorService.process("2 3 + 8 - 5 2 * *");
         //Then

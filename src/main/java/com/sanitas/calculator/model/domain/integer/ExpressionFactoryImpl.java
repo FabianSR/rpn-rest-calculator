@@ -13,7 +13,7 @@ import static com.sanitas.calculator.util.Constants.*;
 public class ExpressionFactoryImpl implements ExpressionFactory<String,Long>{
 
     @Override
-    public Expression<Long> getExpresion(final String token) {
+    public Expression<Long> getExpression(final String token) {
         switch (token) {
             case SUM_SIGN: return new AddExpression();
             case MINUS_SIGN: return new SubtractExpression();

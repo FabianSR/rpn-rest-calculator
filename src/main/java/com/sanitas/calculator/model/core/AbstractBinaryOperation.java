@@ -19,8 +19,8 @@ public abstract class AbstractBinaryOperation<T extends Number> implements Expre
      * @param context
      */
     @Override
-    public final void interpret(Stack<T> context) {
-        T tmp = (T) context.pop();
+    public final void interpret(final Stack<T> context) {
+        final T tmp = (T) context.pop();
         context.push(execute(((T)context.pop()),tmp));
     }
 
