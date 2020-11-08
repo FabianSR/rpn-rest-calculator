@@ -25,6 +25,7 @@ public final class Logger {
     private synchronized static void buildInstance() {
         if (logger == null) logger = new Logger(new TracerImpl());
     }
-
-    public TracerImpl getTracer() { return tracer; }
+    public <T> void trace( final T result ) {
+        tracer.trace(result);
+    }
 }

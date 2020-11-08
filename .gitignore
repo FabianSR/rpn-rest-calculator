@@ -32,5 +32,10 @@ buildNumber.properties
 *.tar.gz
 *.rar
 
+# But not these files...
+!tracer-1.0.0.jar
+!tracer-1.0.0-javadoc.jar
+!tracer-1.0.0-sources.jar
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
