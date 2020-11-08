@@ -2,12 +2,12 @@
 
 ##Introduccion:
 
-Este proyecto consiste en una calculadora para realizar operaciones binarias  (con dos operandos) elementales (sumas, restas, multiplicaciones y divisiones) y permite la composición de las mismas.
+Este proyecto consiste en una calculadora para realizar operaciones binarias  (con dos operandos) elementales (sumas, restas) y permite la composición de las mismas.
 La entrada debe ser una expresión algebraica representada en notación postfija (**rpn**) que es totalmente equivalente a la notación algebraica infija, es decir, toda expresión infija puede ser representada en notación sufija y al revés.
 Esta representación es muy simple; la idea que subyace es que primero se escriben los operandos (que serán dos) y después el operador, separando cada termino por un espacio en blanco (el signo del operando no se separa del mismo), por ejemplo, “3 2 +” equivaldría a 3+2, que es 5, esta terna puede ser considerada como un operador después de resolverse de manera que se apila y si existen más operandos a la derecha (y por ende alguna operación más) se continua la evaluación, si por el contrario es el único miembro de la expresión es que se trata del resultado en lugar de considerarse como operando.
 
 Entonces en la expresión pueden aparecer más de dos operadores adyacentes (**3 2 6 + -**, que se resolvería primero como **2  6  +**, que sería 8, se apilaría y la evaluación continuaría con  **3 8 -**,esto es, **3 – 8 = -5**).
-No es necesario tener en cuenta la preferencia de los operadores ni el uso de paréntesis dado que va implícito en la notación. Esto permitiría añadir otras operaciones como la potencia sin variar el algoritmo.
+No es necesario tener en cuenta la preferencia de los operadores ni el uso de paréntesis dado que va implícito en la notación. Esto permitiría añadir otras operaciones como multiplicaiones, divisiones o potencia sin variar el algoritmo.
 
 Por ejemplo **(2+5) * 4 – 1** en notación algebraica correspondería a
 **2 5 + 4 * 1 –** en notación rpn; **2 ^ (3 ^ 4)** sería **2 3 4 ^ ^**, y **(2 ^ 3) ^ 4** quedaría como **2 3 ^ 4 ^**.

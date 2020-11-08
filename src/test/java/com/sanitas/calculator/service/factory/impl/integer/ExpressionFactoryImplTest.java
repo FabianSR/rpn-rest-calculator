@@ -41,22 +41,6 @@ public class ExpressionFactoryImplTest {
 
     }
     @Test
-    public void getExpression_withMultiSign_shouldRestunMultiExpression(){
-        //Given
-        //When
-        //Then
-        assertThat(isCorrectIntance(MULTI_SIGN, MultiplyExpression.class),is(true));
-
-    }
-    @Test
-    public void getExpression_withDivSign_shouldRestunDivideExpression(){
-        //Given
-        //When
-        //Then
-        assertThat(isCorrectIntance(DIV_SIGN, DivideExpression.class),is(true));
-
-    }
-    @Test
     public void getExpression_withNumericCharacter_shouldRestunOperandExpression(){
         //Given
         //When

@@ -1,12 +1,10 @@
 package com.sanitas.calculator.service.impl;
 
 
-import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
 import com.sanitas.calculator.model.domain.integer.AddExpression;
-import com.sanitas.calculator.model.domain.integer.DivideExpression;
-import com.sanitas.calculator.model.domain.integer.MultiplyExpression;
 import com.sanitas.calculator.model.domain.integer.SubtractExpression;
+import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.util.Constants;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.EmptyStackException;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -59,26 +58,6 @@ public class CalculatorServiceImplTest {
     }
 
     @Test
-    public void evaluate_expressionMultiplyWithOperands_shouldReturnResultEvaluation() {
-        //Given
-        when(expressionFactory.getExpression(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
-        //When
-        String result = calculatorService.process("2 3 *");
-        //Then
-        assertThat(result, is(equalTo("6")));
-    }
-
-    @Test
-    public void evaluate_expressionDivideWithOperands_shouldReturnResultEvaluation() {
-        //Given
-        when(expressionFactory.getExpression(Constants.DIV_SIGN)).thenReturn(new DivideExpression());
-        //When
-        String result = calculatorService.process("2 3 /");
-        //Then
-        assertThat(result, is(equalTo("0")));
-    }
-
-    @Test
     public void evaluate_combinedAddAndSubtractExpressionWithOperands_shouldReturnResultEvaluation() {
         //Given
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
@@ -92,13 +71,41 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_combinedExpressionWithOperands_shouldReturnResultEvaluation() {
         //Given
-        // 2 3 + 8 - 5 2 * * -> (2+3-8)*(5*2)
+        // 2 3 + 8 - 5 2 + + -> (2+3-8)+(5+2)
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
-        when(expressionFactory.getExpression(Constants.MULTI_SIGN)).thenReturn(new MultiplyExpression());
-        //When
-        String result = calculatorService.process("2 3 + 8 - 5 2 * *");
+         //When
+        String result = calculatorService.process("2 3 + 8 - 5 2 + +");
         //Then
-        assertThat(result, is(equalTo("-30")));
+        assertThat(result, is(equalTo("4")));
+    }
+
+    @Test(expected= EmptyStackException.class)
+    public void evaluate_combinedExpressionWithIncorrectNumberOfOperations_shouldThrowEmptyStackException() {
+        //Given
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        //When //Then
+        calculatorService.process("2 3 + 8 - 5 2 + + +");
+    }
+
+    @Test
+    public void evaluate_combinedExpressionWithIncorrectNumberOfOperand_shouldReturnErrorMessage() {
+        //Given
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        //When
+        String result = calculatorService.process("2 3");
+        //Then
+        assertThat(result, is(equalTo(Constants.EXPRESSION_IS_NOT_COMPLETE)));
+    }
+
+    @Test(expected= NullPointerException.class)
+    public void evaluate_combinedExpressionWithIncorrectCharacters_shouldThrowNullPointerException() {
+        //Given
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        //When //Then
+        calculatorService.process("2 ?");
     }
 }

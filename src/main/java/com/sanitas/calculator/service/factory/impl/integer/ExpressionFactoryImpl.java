@@ -2,8 +2,6 @@ package com.sanitas.calculator.service.factory.impl.integer;
 
 import com.sanitas.calculator.model.core.Expression;
 import com.sanitas.calculator.model.domain.integer.AddExpression;
-import com.sanitas.calculator.model.domain.integer.DivideExpression;
-import com.sanitas.calculator.model.domain.integer.MultiplyExpression;
 import com.sanitas.calculator.model.domain.integer.SubtractExpression;
 import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
@@ -22,8 +20,6 @@ public class ExpressionFactoryImpl implements ExpressionFactory<String,Long>{
         switch (token) {
             case SUM_SIGN: return new AddExpression();
             case MINUS_SIGN: return new SubtractExpression();
-            case MULTI_SIGN: return new MultiplyExpression();
-            case DIV_SIGN: return new DivideExpression();
             default: return new OperandExpression(Long.valueOf(token));
         }
     }

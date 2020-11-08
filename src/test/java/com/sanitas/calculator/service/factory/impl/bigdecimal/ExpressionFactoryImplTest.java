@@ -2,11 +2,8 @@ package com.sanitas.calculator.service.factory.impl.bigdecimal;
 
 import com.sanitas.calculator.model.core.OperandExpression;
 import com.sanitas.calculator.model.domain.bigdecimal.AddExpression;
-import com.sanitas.calculator.model.domain.bigdecimal.DivideExpression;
-import com.sanitas.calculator.model.domain.bigdecimal.MultiplyExpression;
 import com.sanitas.calculator.model.domain.bigdecimal.SubtractExpression;
 import com.sanitas.calculator.service.factory.ExpressionFactory;
-import com.sanitas.calculator.service.factory.impl.bigdecimal.ExpressionFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +24,7 @@ public class ExpressionFactoryImplTest {
     }
 
     @Test
-    public void getExpression_withSumSign_shouldRestunAddExpression(){
+    public void getExpression_withSumSign_shouldReturnAddExpression(){
         //Given
         //When
         //Then
@@ -35,31 +32,16 @@ public class ExpressionFactoryImplTest {
     }
 
     @Test
-    public void getExpression_withMinuSign_shouldRestunSubtractExpression(){
+    public void getExpression_withMinuSign_shouldReturnSubtractExpression(){
         //Given
         //When
         //Then
         assertThat(isCorrectIntance(MINUS_SIGN, SubtractExpression.class),is(true));
 
     }
-    @Test
-    public void getExpression_withMultiSign_shouldRestunMultiExpression(){
-        //Given
-        //When
-        //Then
-        assertThat(isCorrectIntance(MULTI_SIGN, MultiplyExpression.class),is(true));
 
-    }
     @Test
-    public void getExpression_withDivSign_shouldRestunDivideExpression(){
-        //Given
-        //When
-        //Then
-        assertThat(isCorrectIntance(DIV_SIGN, DivideExpression.class),is(true));
-
-    }
-    @Test
-    public void getExpression_withNumericCharacter_shouldRestunOperandExpression(){
+    public void getExpression_withNumericCharacter_shouldReturnOperandExpression(){
         //Given
         //When
         //Then
