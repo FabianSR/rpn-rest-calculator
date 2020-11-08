@@ -12,6 +12,11 @@ import java.math.BigDecimal;
 
 import static com.sanitas.calculator.util.Constants.*;
 
+/**
+ * Factory pattern
+ * Concrete factory for BigDecimal
+ * @autor FabianSR
+ */
 public class ExpressionFactoryImpl implements ExpressionFactory<String, BigDecimal>{
 
     @Override

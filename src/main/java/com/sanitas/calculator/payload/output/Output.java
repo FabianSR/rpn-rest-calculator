@@ -27,7 +27,10 @@ public final class Output {
 
     /**
      * Builder Pattern
-     * Output instance are not modificables after be build
+     * evaluatedExpresion cannot be change after that Output be build.
+     * This DOES NOT PREVENT that its internal attribute (input) from
+     * being accessed and its "expression" field from being modiefied
+     * (using its setExpression method)
      */
     public static final class OutputBuilder {
 

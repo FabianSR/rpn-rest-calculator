@@ -4,6 +4,8 @@ import io.corp.calculator.TracerImpl;
 
 /**
  * Singleton pattern
+ * It does not prevent the instantiation of TracerImpl but implements a single object (Logger)
+ * to access a single instance of the tracer
  * @autor FabianSR
  */
 public final class Logger {
@@ -16,11 +18,11 @@ public final class Logger {
     }
 
     public static Logger getLoggerInstance() {
-        if (logger == null) buildIntance();
+        if (logger == null) buildInstance();
         return logger;
     }
 
-    private synchronized static void buildIntance() {
+    private synchronized static void buildInstance() {
         if (logger == null) logger = new Logger(new TracerImpl());
     }
 

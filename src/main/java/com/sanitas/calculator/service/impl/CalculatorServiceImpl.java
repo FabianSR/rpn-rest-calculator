@@ -23,11 +23,24 @@ public class CalculatorServiceImpl implements CalculatorService {
     public CalculatorServiceImpl(final ExpressionFactory expressionFactory){
         this.expressionFactory = expressionFactory;
     }
+
+    /**
+     * It parses the input string generating a list of expressions and evaluate them
+     * @param input
+     * @return
+     */
     @Override
     public String process(final String input) {
         return evaluate(of(input.split(BLANK_STR)).map(s-> expressionFactory.getExpression(s)).collect(toList()));
     }
 
+    /**
+     * It takes the list of expressions built from the input string and applies
+     * its interpret method from each of them, this applies the operation
+     * (or takes the operand) and saves the result to a stack.
+     * @param parsedExpressions
+     * @return
+     */
     private String evaluate(final List<Expression> parsedExpressions) {
         final Stack<Number> contextResults = new Stack<>();
         parsedExpressions.forEach(e -> e.interpret(contextResults));

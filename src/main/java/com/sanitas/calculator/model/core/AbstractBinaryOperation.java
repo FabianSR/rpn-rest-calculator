@@ -1,7 +1,5 @@
 package com.sanitas.calculator.model.core;
 
-import com.sanitas.calculator.model.core.Expression;
-
 import java.util.Stack;
 
 /**

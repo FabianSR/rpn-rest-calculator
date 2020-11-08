@@ -13,6 +13,7 @@ import static com.sanitas.calculator.util.Constants.*;
 /**
  * Factory pattern
  * Concrete factory for Long
+ * @autor FabianSR
  */
 public class ExpressionFactoryImpl implements ExpressionFactory<String,Long>{
 
