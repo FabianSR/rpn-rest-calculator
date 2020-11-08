@@ -5,7 +5,7 @@ import com.sanitas.calculator.model.core.AbstractBinaryOperation;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import static java.math.MathContext.DECIMAL32;
+import static java.math.MathContext.DECIMAL128;
 
 public abstract class AbstractBigDecimalExpression extends AbstractBinaryOperation<BigDecimal> {
 
@@ -19,7 +19,7 @@ public abstract class AbstractBigDecimalExpression extends AbstractBinaryOperati
      * Default precision
      */
     protected AbstractBigDecimalExpression() {
-        this(DECIMAL32);
+        this(DECIMAL128);
     }
 
     MathContext getPrecision() {

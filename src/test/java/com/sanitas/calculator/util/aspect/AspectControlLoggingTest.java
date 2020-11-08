@@ -44,7 +44,7 @@ public class AspectControlLoggingTest {
     }
 
     @Test
-    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProccesThrowingEmptyStackException_shoulResturnErrorResponse() throws Throwable {
+    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProcessThrowingEmptyStackException_shoulResturnErrorResponse() throws Throwable {
         //Given
         when(joinPoint.proceed()).thenThrow(new EmptyStackException());
         //When
@@ -56,7 +56,7 @@ public class AspectControlLoggingTest {
     }
 
     @Test
-    public void forJoinPointProccesThrowingNumberFormatException_shoulResturnErrorResponse() throws Throwable {
+    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProccesThrowingNumberFormatException_shouldReturnErrorResponse() throws Throwable {
         //Given
         when(joinPoint.proceed()).thenThrow(new NumberFormatException());
         //When
@@ -68,7 +68,7 @@ public class AspectControlLoggingTest {
     }
 
     @Test
-    public void forJoinPointProccesThrowingSomeRuntimeException_shoulResturnErrorResponse() throws Throwable {
+    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProccesThrowingSomeRuntimeException_shouldReturnErrorResponse() throws Throwable {
         //Given
         when(joinPoint.proceed()).thenThrow(new RuntimeException());
         //When
