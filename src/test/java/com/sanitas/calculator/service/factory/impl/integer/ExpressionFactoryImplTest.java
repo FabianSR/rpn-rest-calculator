@@ -1,15 +1,20 @@
-package com.sanitas.calculator.model;
+package com.sanitas.calculator.service.factory.impl.integer;
 
-import com.sanitas.calculator.model.core.ExpressionFactory;
+import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
 import com.sanitas.calculator.model.domain.integer.*;
-import com.sanitas.calculator.util.Constants;
+import static com.sanitas.calculator.util.Constants.*;
+
+import com.sanitas.calculator.service.factory.impl.integer.ExpressionFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * Test for integers (long)
+ */
 public class ExpressionFactoryImplTest {
 
     private ExpressionFactory expressionFactory;
@@ -24,15 +29,15 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpression(Constants.SUM_SIGN) instanceof AddExpression,is(true));
-
+        assertThat(isCorrectIntance(SUM_SIGN, AddExpression.class), is(true));
     }
+
     @Test
     public void getExpression_withMinuSign_shouldRestunSubtractExpression(){
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpression(Constants.MINUS_SIGN) instanceof SubtractExpression,is(true));
+        assertThat(isCorrectIntance(MINUS_SIGN, SubtractExpression.class),is(true));
 
     }
     @Test
@@ -40,7 +45,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpression(Constants.MULTI_SIGN) instanceof MultiplyExpression,is(true));
+        assertThat(isCorrectIntance(MULTI_SIGN, MultiplyExpression.class),is(true));
 
     }
     @Test
@@ -48,7 +53,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpression(Constants.DIV_SIGN) instanceof DivideExpression,is(true));
+        assertThat(isCorrectIntance(DIV_SIGN, DivideExpression.class),is(true));
 
     }
     @Test
@@ -56,7 +61,11 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(expressionFactory.getExpression("7") instanceof OperandExpression,is(true));
+        assertThat(isCorrectIntance("7", OperandExpression.class),is(true));
 
+    }
+
+    private <T> boolean isCorrectIntance(final String sign, Class<T> clazz) {
+        return clazz.isInstance(expressionFactory.getExpression(sign));
     }
 }

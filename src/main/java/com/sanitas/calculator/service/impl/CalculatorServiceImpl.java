@@ -1,7 +1,7 @@
 package com.sanitas.calculator.service.impl;
 
 import com.sanitas.calculator.model.core.Expression;
-import com.sanitas.calculator.model.core.ExpressionFactory;
+import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.service.CalculatorService;
 import com.sanitas.calculator.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;

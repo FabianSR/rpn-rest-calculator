@@ -1,7 +1,11 @@
-package com.sanitas.calculator.model.domain.integer;
+package com.sanitas.calculator.service.factory.impl.integer;
 
 import com.sanitas.calculator.model.core.Expression;
-import com.sanitas.calculator.model.core.ExpressionFactory;
+import com.sanitas.calculator.model.domain.integer.AddExpression;
+import com.sanitas.calculator.model.domain.integer.DivideExpression;
+import com.sanitas.calculator.model.domain.integer.MultiplyExpression;
+import com.sanitas.calculator.model.domain.integer.SubtractExpression;
+import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
 
 import static com.sanitas.calculator.util.Constants.*;

@@ -1,4 +1,6 @@
-package com.sanitas.calculator.model.core;
+package com.sanitas.calculator.service.factory;
+
+import com.sanitas.calculator.model.core.Expression;
 
 /**
  * Factory Pattern

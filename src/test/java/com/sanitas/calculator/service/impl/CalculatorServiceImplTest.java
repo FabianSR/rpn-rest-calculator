@@ -1,7 +1,7 @@
 package com.sanitas.calculator.service.impl;
 
 
-import com.sanitas.calculator.model.core.ExpressionFactory;
+import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
 import com.sanitas.calculator.model.domain.integer.AddExpression;
 import com.sanitas.calculator.model.domain.integer.DivideExpression;

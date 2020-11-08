@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.joining;
  */
 @Component
 @Aspect
-public class AspectControlLogger {
+public class AspectControlLogging {
 
     @Pointcut("execution(* com.sanitas.calculator.service.impl.*.*(..))")
     public void serviceClassMethods() {
@@ -31,13 +31,13 @@ public class AspectControlLogger {
     /**
      * Add here other factories
      */
-    @Pointcut("execution(* com.sanitas.calculator.model.domain.integer.*.*(..)) ||" +
-            "execution(* com.sanitas.calculator.model.domain.bigdecimalexmaple.*.*(..))")
+    @Pointcut("execution(* com.sanitas.calculator.service.factory.impl.integer.*.*(..)) ||" +
+            "execution(* com.sanitas.calculator.service.factory.impl.bigdecimal.*.*(..))")
     public void fabricationMethods() {
     }
 
     @Around("serviceClassMethods() || controllerClassMethods()")
-    public Object controlEntryAndExistBusinessMethods(final ProceedingJoinPoint joinPoint) {
+    public Object controlEntryAndExistBusinessAndControllerMethods(final ProceedingJoinPoint joinPoint) {
         Object response;
         try {
             response = printLog("business method : %s; input : %s ; response: %s", joinPoint);
