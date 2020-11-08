@@ -6,13 +6,13 @@ Este proyecto consiste en una calculadora para realizar operaciones binarias  (c
 La entrada debe ser una expresión algebraica representada en notación postfija (**rpn**) que es totalmente equivalente a la notación algebraica infija, es decir, toda expresión infija puede ser representada en notación sufija y al revés.
 Esta representación es muy simple; la idea que subyace es que primero se escriben los operandos (que serán dos) y después el operador, separando cada termino por un espacio en blanco (el signo del operando no se separa del mismo), por ejemplo, “3 2 +” equivaldría a 3+2, que es 5, esta terna puede ser considerada como un operador después de resolverse de manera que se apila y si existen más operandos a la derecha (y por ende alguna operación más) se continua la evaluación, si por el contrario es el único miembro de la expresión es que se trata del resultado en lugar de considerarse como operando.
 
-Entonces en la expresión pueden aparecer más de dos operadores adyacentes (**3 2 6 + -**, que se resolvería primero como a **2  6  +**, que sería 8, se apilaría y la evaluación continuaría con  **3 8 -**,esto es, **3 – 8 = -5**).
+Entonces en la expresión pueden aparecer más de dos operadores adyacentes (**3 2 6 + -**, que se resolvería primero como **2  6  +**, que sería 8, se apilaría y la evaluación continuaría con  **3 8 -**,esto es, **3 – 8 = -5**).
 No es necesario tener en cuenta la preferencia de los operadores ni el uso de paréntesis dado que va implícito en la notación. Esto permitiría añadir otras operaciones como la potencia sin variar el algoritmo.
 
 Por ejemplo **(2+5) * 4 – 1** en notación algebraica correspondería a
-2 5 + 4 * 1 – en notación rpn; 2 ^ (3 ^ 4) sería 2 3 4 ^ ^, y **(2 ^ 3) ^ 4** quedaría como **2 3 ^ 4 ^**.
+**2 5 + 4 * 1 –** en notación rpn; **2 ^ (3 ^ 4)** sería **2 3 4 ^ ^**, y **(2 ^ 3) ^ 4** quedaría como **2 3 ^ 4 ^**.
 
-Expongo aquí unos ejemplos y algoritmo que formaliza la idea anterior:
+Expongo aquí algunos ejemplos y algoritmo que formaliza la idea anterior:
 (En el primer bloque la parte izquierda del ≡ sería la representacion postfija y la de la derecha la notacion infija, en el segundo sería al revés)
 
     3 + 2 ≡ 3 2 +
@@ -41,11 +41,15 @@ Esta notación permite una fácil evaluación de la expresiones utilizando una p
 ##Explicación funcional:
 
 
-La aplicación expone un unico endpoint que tiene como entrada un json con la propiedad expression con una cadena de caracteres (numericos enteros y los signos que representan las operaciones básicas, separando cada elemento por un espacio en blanco, el signo de un operando no debe separarse del mismo) como la expresión a evaluar como sigue:
+La aplicación expone un único endpoint (http://${SERVER}:${PORT}/calculator/v1/evaluation) que tiene como entrada un json con la propiedad expression con una cadena de caracteres (numericos enteros y los signos que representan las operaciones básicas, separando cada elemento por un espacio en blanco, el signo de un operando no debe separarse del mismo) como la expresión a evaluar como sigue:
 
     {
         "expression": "3 2 6 - +"
     }
+
+o en su version curl:
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "3 2 6 - +"}'   http://localhost:8080/calculator/v1/evaluation
 
 La evalución de la expresion se devolvera en la dentro de un json (en el campo evaluatedExpression) que tambien incluirá la entrada tal que así:
 
@@ -56,8 +60,14 @@ La evalución de la expresion se devolvera en la dentro de un json (en el campo 
         "evaluatedExpression": "-1"
     }
 
+Resultado de la peticion curl:
 
-Si la expresión de entrada tiene algún error de sintaxis este vendrá informado en la propiedad evaluatedExpression como sigue:
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100    92    0    65  100    27    343    142 --:--:-- --:--:-- --:--:--   489{"input":{"expression":"3 2 6 - +"},"evaluatedExpression":"-1.0"}
+
+
+Si la expresión de entrada tiene algún error de sintaxis este vendrá informado en la propiedad _evaluatedExpression_ como sigue:
 
     {
         "input": {
@@ -81,7 +91,7 @@ Si después de las evaluaciones queda más de un operando en la pila se consider
 
 ###Resumen:
 
-La aplicación se ha diseñado con un endpoint de entrada de forma que se pueda evaluar una cadena compleja (que representa una expresión o composición de estas) analizándola gramaticalmente y descomponiendola en expresiones que pueden manejarse computacionalmente (patrón interpreter) , estas pueden ser operaciones u operandos; los operandos (o expresiones terminales) se interpretan como valores númericos y son alamacenados en una pila, y las operaciones que se interpretan sacando de la pila los operandos y aplicando el operador java correspondiente. El valor obtenido es vuelto a apilar en la pila. El último valor apilado corresponde con el resultado.
+La aplicación puede evaluar una cadena  que representa una expresión o una composición de estas analizándola gramáticalmente y descomponiendola en expresiones que pueden manejarse computacionalmente (patrón interpreter) , estas pueden ser operaciones u operandos; los operandos (o expresiones terminales) se interpretan como valores númericos y son alamacenados en una pila, y las operaciones que se interpretan sacando de la pila los operandos y aplicando el operador java correspondiente. El valor obtenido es vuelto a apilar en la pila. El último valor apilado corresponde con el resultado.
 Se ha creado una factoria para la construcción de las expresiones de manera que sea sencillo cambiar los tipos (sistemas númericos) y añadir nuevas operaciones sin necesidad de hacer ningún otro cambio en el código ya escrito (patrón factory).
 El control de errores y logging se lleva a cabo mediante aspectos para mantener la encapsulación de las clases y su simplicidad evitando incluir  tareas transversales en su código.
 
@@ -92,9 +102,9 @@ La aplicación sigue una arquitectura de dos capas, controller y service, con el
 # ![alt text](doc/classDiagram.png)
 
 
-El controler recibe una petión http POST con un payload en su cuerpo que contiene la expression a evaluar como cadena y devuelve el mismo objeto de entrada más la porpiedad expressionEvaluated con el resultado de la expression evaluada también como cadena. Este objeto de salida es inmutable después de su construcción (patrón builder) para evitar ser manejado como un dto dentro de la aplicación.
-La cadena en la entrada se pasa a la bean de servicio (scope singleton) para que la procese (a traves de interfaces); esta primero separa la cadena en subcadenas utilizando el espacio en blanco como carácter separador, estas cadenas son pasadas secuencialmente a su vez como parámetro a una factoría (inyectada en el constructor del servicio) encargada de la construcción de las expresiones. Para ello se combinan el patrón template method y el patrón factory.
-El patrón template method (o método plantilla) permite simplificar el código de las operaciones como sigue: todas comparten un paso común en su método interpret(), este es el de sacar dos valores de una pila además de usarla como extructura donde dejar el resultado de su ejecución y es este último paso lo único que varía de una expresión (operación binaria) a otra, entonces se puede definir este como abstracto forzando a las clases hijas (no abstractas)  a reescribir solo este paso y no todo el método interpret(), que aunque no tiene demasiadas lineas puede ser costoso si se añaden nuevas operaciones y/o se desea codificar las mismas con otra implementación (si los operadores no son compatibles con el tipo numérico requerido por ejemplo).
+El controler recibe una petición http POST con un payload en su cuerpo que contiene la expression a evaluar como cadena y devuelve el mismo objeto de entrada añadiendo la porpiedad _expressionEvaluated_ con el resultado de la evaluación como cadena. Este objeto de salida es inmutable después de su construcción (patrón builder).
+La cadena en la entrada se pasa a la bean de servicio (ambito singleton) para que la procese (todo a traves de interfaces); esta primero separa la cadena en subcadenas utilizando el espacio en blanco como carácter separador, estas subcadenas son usadas a su vez como parámetro en una factoría (inyectada en el constructor del servicio) encargada de la construcción de las expresiones. Para ello se combinan el patrón template method y el patrón factory.
+El patrón template method (o método plantilla) permite simplificar el código de las operaciones como sigue: todas comparten un paso común en su método _interpret()_, este es el de sacar dos valores de una pila además de usarla como extructura donde dejar el resultado de su ejecución y es este último paso lo único que varía de una expresión (operación binaria) a otra, entonces se puede definir este como abstracto forzando a las clases hijas (no abstractas) a reescribir solo este paso y no todo el método _interpret()_, que aunque no tiene demasiadas lineas puede ser costoso si se añaden nuevas operaciones y/o se desea codificar las mismas con otra implementación (si los operadores no son compatibles con el tipo numérico requerido por ejemplo).
 
     public abstract class AbstractBinaryOperation<T extends Number> implements Expression<T> {
         @Override
@@ -105,21 +115,21 @@ El patrón template method (o método plantilla) permite simplificar el código 
         protected abstract T execute(final T a, final T b);
     }
 
-Esto combina perfectamente con el siguiente patrón utilizado, a saber, el patrón factory. Originalmente la aplicación estaba solo preparada para cálculos con número enteros (Long) pero esto es susceptible (fácilmente) de querer modificarse si se desean por ejemplo operaciones con decimales. La solución ha este problema ha sido utilizar el patrón factory; la lógica del servicio delega la responsabilidad de la creacion de las expresiones que representan las operaciones binarias y operandos a una clase factoría con dos clases parametrizadas, la primera es la clase del parámetro que se usará para discriminar la instancia a construir (en este caso es la subcadena obtenida del análisis de la cadena de entrada) y el segundo es el tipo del sistema númerico a utilizar.
+Esto combina perfectamente con el siguiente patrón utilizado, a saber, el patrón _factory_. Originalmente la aplicación estaba solo preparada para cálculos con número enteros (_Long_) pero esto es susceptible (fácilmente) de querer modificarse si se desean por ejemplo operaciones con decimales. La solución ha este problema ha sido utilizar factorias; la lógica del servicio delega la responsabilidad de la creacion de las expresiones (que representan las operaciones binarias y operandos) a una clase factoría con dos clases parametrizadas, la primera es la clase del parámetro que se usará para discriminar la instancia a construir (en este caso es la subcadena obtenida del análisis de la cadena de entrada previo) y el segundo es el tipo del sistema númerico a utilizar.
 
     public interface ExpressionFactory<Q,T extends Number> {
         Expression<T> getExpression(final Q q);
     }
 
 
-Esto desacopla el código de la lógica del servicio de la construcción de las operaciones y sus tipos (que además tienen un código muy simple gracias al patrón template method).
+Esto desacopla el código de la lógica del servicio de la construcción de las operaciones y sus tipos (¡que además tienen un código muy simple gracias al patrón _template method_!).
 
     public class AddExpression extends AbstractBinaryOperation<Long> {
         protected Long execute(final Long a, final Long b) { return a+b;}
     }
 
 
-La manera de seleccionar la factoría a utilizar se lleva a cabo en la clase de configuración del contexto de Spring CalculatorConfig al iniciar la aplicación. No ha sido necesarío añadir una capa más de abstracción en la factoria ya que se ha asumido que solo se usará la familia de expresiones binarias propuesta; si por ejemplo se quisieran añadir otras familias de operaciones (unarias o funciones de más de dos operandos) validas para los posibles conjuntos numéricos (aplicando polimorfismo) sería interesante aplicar el patrón abstract factory.
+La manera de seleccionar la factoría a utilizar se lleva a cabo en la clase de configuración del contexto de Spring _CalculatorConfig_ al iniciar la aplicación. No ha sido necesarío añadir una capa más de abstracción en la factoria ya que se ha asumido que solo se usará la familia de expresiones binarias; si por ejemplo se quisieran añadir otras familias de operaciones (unarias o funciones de más de dos operandos) validas para los posibles conjuntos numéricos (aplicando polimorfismo) sería interesante aplicar el patrón abstract factory.
 
     @Configuration
     public class CalculatorConfig {
@@ -129,7 +139,7 @@ La manera de seleccionar la factoría a utilizar se lleva a cabo en la clase de 
         }
     }
 
-Por último, para el tratamiendo de excepciones y el registro de trazas de log se ha utilizado el módulo de Spring AOP para la programación orientada a aspectos.
+Por último, para el tratamiendo de excepciones y el registro de trazas de log se ha utilizado el módulo de Spring _AOP_ para la programación orientada a aspectos.
 Cuando un método hace varias cosas se dice que rompe el princpio de responsabilidad única y sugiere una mala encapsulación, que un método escriba una traza de log (o lleve a cabo la gestión de posibles errores o excepciones) aparte de ejecutar las instrucciones propias para las que fue pensado podría considerarse una excepción al tratarse de tareas transversales (aspectos) comunes a muchas clases que no pueden ser encapsuladas en otra y por tanto separada del sistema, pero en el fondo no deja de ser un problema en el diseño. Una posible solución  es utilizar el patrón de diseño proxy que básicamente es una clase cuyas instancias simulan ser objetos que realmente no son, es decir, tienen una referencia al objeto real (con la misma interfaz) pero controlan el acceso a sus métodos haciendo de intermediarios, por ejemplo
 
     class EjemploProxyWithTraces implements EjemploInterfaz{
@@ -190,7 +200,7 @@ La gestión de errores se ha llevado a cabo para los métodos del controlador y 
 Cuando una operación de la expresión de entrada no permite extraer más de un operando de la pila (dado que al hacerlo se quede vacía) se lanzará una EmptyStackException que el advice capturará y construirá una respuesta informado al usuario.
 Cuando una cadenas no corresponda con un operador intentará contruirse un operando en la factoría, si es no es una cadena que pueda ser parseada se lanzará una NumberFormatException y ocurrirá lo mismo.
 
-Para el resto de excepciones y errores (Throwables) se devolverá un mensaje de error genérico.
+Para el resto de excepciones y errores (_Throwable_) se devolverá un mensaje de error genérico.
 
 
 
@@ -200,13 +210,13 @@ Añadimos los jar proporcionados para las trazas al classplath del proyecto.
 Ejecutamos el comando:
 
     mvn install:install-file
-     -Dfile="C:\Users\Fabi\Downloads\pruebas-tecnicas\pruebas-tecnicas\prueba tecnica 4\tracer-1.0.0.jar"
+     -Dfile="%{FILE_PATH}\tracer-1.0.0.jar"
      -DgroupId=io.corp.calculator
      -DartifactId=tracer
      -Dversion=1.0.0
      -Dpackaging=jar
 
-Esto incluirá las jar a la carpeta .m2 donde maven busca localmente las librerías que descarga.
+Esto incluirá las jar a la carpeta _.m2_ donde maven busca localmente las librerías que descarga.
 
 Añadimos la dependencia maven al pom
 
