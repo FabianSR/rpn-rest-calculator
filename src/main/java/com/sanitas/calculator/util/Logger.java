@@ -5,7 +5,7 @@ import io.corp.calculator.TracerImpl;
 /**
  * Singleton pattern
  * It does not prevent the instantiation of TracerImpl but implements a single object (Logger)
- * to access a single instance of the tracer
+ * to access trace(...) method form a single instance of the tracer
  * @autor FabianSR
  */
 public final class Logger {

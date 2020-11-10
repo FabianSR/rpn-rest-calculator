@@ -82,7 +82,7 @@ O bien
         "input": {
             "expression": "3 2 6 - + !"
         },
-        "evaluatedExpression": "NOT NUMERIC OPERAND"
+        "evaluatedExpression": "NON-NUMERIC OPERAND"
     }
 
 Si después de las evaluaciones queda más de un operando en la pila se considerará que la expresión no está completa.
@@ -139,6 +139,14 @@ La manera de seleccionar la factoría a utilizar se lleva a cabo en la clase de 
         }
     }
 
+Si se selecciona la factoría para BigDecimal la entrada puede ser por ejemplo:
+
+    curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "3.27 2 6.15 - -"}'   http://localhost:8080/calculator/v1/evaluation
+
+con salida (recuerdese que la expresión equivaldría a _*3.27 - (2 - 6.15)*_):
+
+    {"input":{"expression":"3.27 2 6.15 - -"},"evaluatedExpression":"7.42"}
+
 Por último, para el tratamiendo de excepciones y el registro de trazas de log se ha utilizado el módulo de _Spring AOP_ para la programación orientada a aspectos.
 Cuando un método hace varias cosas se dice que rompe el princpio de responsabilidad única y sugiere una mala encapsulación, que un método escriba una traza de log (o lleve a cabo la gestión de posibles errores o excepciones) aparte de ejecutar las instrucciones propias para las que fue pensado podría considerarse una excepción al tratarse de tareas transversales (aspectos) comunes a muchas clases que no pueden ser encapsuladas en otra y por tanto separada del sistema, pero en el fondo no deja de ser un problema en el diseño. Una posible solución  es utilizar el patrón de diseño proxy que básicamente es una clase cuyas instancias simulan ser objetos que realmente no son, es decir, tienen una referencia al objeto real (con la misma interfaz) pero controlan el acceso a sus métodos haciendo de intermediarios, por ejemplo:
 
@@ -160,8 +168,8 @@ Cuando un método hace varias cosas se dice que rompe el princpio de responsabil
     }
 
 Ocurre que crear un proxy para cada clase puede ser muy costoso. Se duplicaría el número de clases dentro del propio sistema y estas seguírian encapsulando mal la funcionalidad transversal dado que no es un solo proxy el encargado de escribir las trazas. Spring AoP ofrece una verdadera solución con la misma idea pero bien implementada.
-La tarea transversal encargada de escribir trazas puede ser encapsulada en una única clase que no modeliza un objeto sino un aspecto (anotacion @Aspect). Esta clase comprende los puntos de corte (@Pointcut) donde se definien que metodos del resto de clases deben interceptarse cuando se ejecuten (o justo antes, o justo después) y un metodo (@Advice) que contiene el código a ejecutar cuando esto pase.
-En este caso se ha establecido que para los métodos de fabricación de las operaciones se escriba una traza con la subcadena utilizada como parametro y el tipo de instancia generada y para los de negocio, los parametros de sus metodos y el retorno de los mismos:
+La tarea transversal encargada de escribir trazas puede ser encapsulada en una única clase que no modeliza un objeto sino un aspecto (anotacion @Aspect). Esta clase comprende los puntos de corte (@Pointcut) donde se definien que métodos del resto de clases deben interceptarse cuando se ejecuten (o justo antes, o justo después) y un metodo (@Advice) que contiene el código a ejecutar cuando esto pase.
+En este caso se ha establecido que para los métodos de fabricación de las operaciones se escriba una traza con la subcadena utilizada como parametro y el tipo de instancia generada y para los métodos de negocio, los parametros de sus metodos y el retorno de los mismos:
 
     result :: fabrication method: getExpression input token : 8 ; instance created: com.sanitas.calculator.model.core.OperandExpression@2a9a11c0
     result :: fabrication method: getExpression input token : 2 ; instance created: com.sanitas.calculator.model.core.OperandExpression@7d63eb62
@@ -189,13 +197,13 @@ El patrón singleton es muy sencillo, se declara el constructor de la clase con 
             if (logger == null) logger = new Logger(new TracerImpl());
         }
 
- El resto de llamadas independientes de su concurrencía  siempre resolverán la evaluación como falsa y nunca entraran ya en la segunda (más costosa)
+ El resto de llamadas independientemente de su concurrencía  siempre resolverán la evaluación como falsa y nunca entraran ya en la segunda (más costosa)
 
 El manejo de excepciones se ha llevado a cabo para los métodos del controlador y el servicio (negocio) dado que las factorías y expresiones propagan a estos las _runtime exceptions_ que se producen.
 
 Cuando a una operación no se le permite extraer más de un operando de la pila (si se ha quedado vacía) se lanzará una _EmptyStackException_ que el método _advice_ capturará, se construirá una respuesta con el mensaje _"EXPRESSION IS NOT COMPLETE"_.
 
-Cuando una cadena no corresponda con un operador intentará contruirse un operando en la factoría, si es no es una cadena que pueda ser parseada se lanzará una _NumberFormatException_ y se devolverá el mensaje "NOT NUMERIC OPERAND".
+Cuando una cadena no corresponda con un operador intentará contruirse un operando en la factoría, si este no es una cadena que pueda ser parseada se lanzará una _NumberFormatException_ y se devolverá el mensaje "NON-NUMERIC OPERAND".
 
 Para el resto de excepciones y errores (_Throwable_), por ejemplo si se añade la operación division y al tratar de dividir por cero esta lanzaría una 
 _ArithmeticException_ que se capturará devolvolviendo un mensaje de error genérico, "ERROR".
@@ -212,7 +220,7 @@ Ejecutamos el comando:
      -Dversion=1.0.0
      -Dpackaging=jar
 
-Esto incluirá las jar a la carpeta _.m2_ donde maven busca localmente las librerías que descarga.
+Esto incluirá los jar en la carpeta _.m2_ donde maven busca localmente las librerías que descarga.
 
 Añadimos la dependencia maven al pom
 
