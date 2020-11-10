@@ -1,19 +1,19 @@
-package com.sanitas.calculator.service.factory.impl.integer;
+package com.sanitas.calculator.service.factory.impl;
 
-import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
-import com.sanitas.calculator.model.domain.integer.*;
-import static com.sanitas.calculator.util.Constants.*;
-
-import com.sanitas.calculator.service.factory.impl.integer.ExpressionFactoryImpl;
+import com.sanitas.calculator.model.AddExpression;
+import com.sanitas.calculator.model.SubtractExpression;
+import com.sanitas.calculator.service.factory.ExpressionFactory;
+import com.sanitas.calculator.service.factory.impl.ExpressionFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.sanitas.calculator.util.Constants.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test for integers (long)
+ * Test for integers (bigDecimal)
  */
 public class ExpressionFactoryImplTest {
 
@@ -25,7 +25,7 @@ public class ExpressionFactoryImplTest {
     }
 
     @Test
-    public void getExpression_withSumSign_shouldRestunAddExpression(){
+    public void getExpression_withSumSign_shouldReturnAddExpression(){
         //Given
         //When
         //Then
@@ -33,15 +33,16 @@ public class ExpressionFactoryImplTest {
     }
 
     @Test
-    public void getExpression_withMinuSign_shouldRestunSubtractExpression(){
+    public void getExpression_withMinuSign_shouldReturnSubtractExpression(){
         //Given
         //When
         //Then
         assertThat(isCorrectIntance(MINUS_SIGN, SubtractExpression.class),is(true));
 
     }
+
     @Test
-    public void getExpression_withNumericCharacter_shouldRestunOperandExpression(){
+    public void getExpression_withNumericCharacter_shouldReturnOperandExpression(){
         //Given
         //When
         //Then

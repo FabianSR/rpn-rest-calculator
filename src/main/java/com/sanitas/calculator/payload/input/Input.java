@@ -1,20 +1,12 @@
 package com.sanitas.calculator.payload.input;
 
-/**
- * @autor FabianSR
- */
-public class Input {
-    private String expression;
-    public String getExpression() {
-        return expression;
-    }
-    public void setExpression(final String expression) {
-        this.expression = expression;
-    }
+import com.sanitas.calculator.payload.Payload;
+
+public final class Input extends Payload {
     @Override
     public String toString() {
-        return "Input -> {" +
-                "\"expression\": \"" + expression + "\"" +
+        return "Input{" +
+                super.toString() +
                 '}';
     }
 }

@@ -7,6 +7,7 @@ import com.sanitas.calculator.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 import static java.util.stream.Collectors.toList;
@@ -44,6 +45,7 @@ public class CalculatorServiceImpl implements CalculatorService {
     private String evaluate(final List<Expression> parsedExpressions) {
         final Stack<Number> contextResults = new Stack<>();
         parsedExpressions.forEach(e -> e.interpret(contextResults));
-        return contextResults.size()>1? Constants.EXPRESSION_IS_NOT_COMPLETE:contextResults.pop().toString();
+        if(contextResults.size()>1) throw new EmptyStackException();
+        return contextResults.pop().toString();
     }
 }

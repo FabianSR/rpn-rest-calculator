@@ -6,6 +6,7 @@ import com.sanitas.calculator.service.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -27,7 +28,7 @@ public class CalculatorController {
     }
 
     @RequestMapping(value = VERSION+"/evaluation", method = POST)
-    public Output calculate(final @RequestBody Input in){
-        return Output.builder().input(in).evaluation(calculatorService.process(in.getExpression())).build();
+    public Output calculate(final @RequestBody Input input){
+        return new Output(calculatorService.process(input.getExpression().trim()));
     }
 }

@@ -1,9 +1,9 @@
 package com.sanitas.calculator.service.impl;
 
 
+import com.sanitas.calculator.model.AddExpression;
+import com.sanitas.calculator.model.SubtractExpression;
 import com.sanitas.calculator.model.core.OperandExpression;
-import com.sanitas.calculator.model.domain.integer.AddExpression;
-import com.sanitas.calculator.model.domain.integer.SubtractExpression;
 import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.util.Constants;
 import org.junit.Before;
@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
 import java.util.EmptyStackException;
 import java.util.stream.IntStream;
 
@@ -33,7 +34,7 @@ public class CalculatorServiceImplTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         IntStream.range(0,10).boxed().forEach(s->{
-            when(expressionFactory.getExpression(s.toString())).thenReturn( new OperandExpression(Long.parseLong(s.toString())));
+            when(expressionFactory.getExpression(s.toString())).thenReturn( new OperandExpression(BigDecimal.valueOf(s)));
         });
     }
 
@@ -87,17 +88,6 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
         //When //Then
         calculatorService.process("2 3 + 8 - 5 2 + + +");
-    }
-
-    @Test
-    public void evaluate_combinedExpressionWithIncorrectNumberOfOperand_shouldReturnErrorMessage() {
-        //Given
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
-        //When
-        String result = calculatorService.process("2 3");
-        //Then
-        assertThat(result, is(equalTo(Constants.EXPRESSION_IS_NOT_COMPLETE)));
     }
 
     @Test(expected= NullPointerException.class)

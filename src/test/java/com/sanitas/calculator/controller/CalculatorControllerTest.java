@@ -29,14 +29,14 @@ public class CalculatorControllerTest {
     @Test
     public void calculate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
-        final Input in = new Input();
-        in.setExpression("2 3 +");
         when(calculatorService.process(anyString())).thenReturn("5");
+        Input in = new Input();
+        in.setExpression("2 3 +");
         //When
         Output result = calculatorController.calculate(in);
         //Then
         assertThat(result, notNullValue());
-        assertThat(result.getEvaluatedExpression(), is(equalTo("5")));
+        assertThat(result.getExpression(), is(equalTo("5")));
         verify(calculatorService, times(1)).process("2 3 +");
     }
 }

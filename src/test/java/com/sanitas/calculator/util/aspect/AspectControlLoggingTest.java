@@ -20,11 +20,11 @@ public class AspectControlLoggingTest {
     @Mock
     private ProceedingJoinPoint joinPoint;
 
-    private AspectControlLogging aspect;
+    private AspectLogging aspect;
 
     @Before
     public void setUp() {
-        aspect = new AspectControlLogging();
+        aspect = new AspectLogging();
         MockitoAnnotations.initMocks(this);
         when(joinPoint.getSignature()).thenReturn(mock(Signature.class));
         final Object[] arrayArg = {new Object()};
@@ -41,41 +41,5 @@ public class AspectControlLoggingTest {
         assertThat(result, is(not(nullValue())));
         assertThat(result instanceof String, is(true));
         assertThat(result, is(equalTo("test")));
-    }
-
-    @Test
-    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProcessThrowingEmptyStackException_shoulResturnErrorResponse() throws Throwable {
-        //Given
-        when(joinPoint.proceed()).thenThrow(new EmptyStackException());
-        //When
-        Object result = aspect.controlEntryAndExistBusinessAndControllerMethods(joinPoint);
-        //Then
-        assertThat(result, is(not(nullValue())));
-        assertThat(result instanceof String, is(true));
-        assertThat(result, is(equalTo(EXPRESSION_IS_NOT_COMPLETE)));
-    }
-
-    @Test
-    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProccesThrowingNumberFormatException_shouldReturnErrorResponse() throws Throwable {
-        //Given
-        when(joinPoint.proceed()).thenThrow(new NumberFormatException());
-        //When
-        Object result = aspect.controlEntryAndExistBusinessAndControllerMethods(joinPoint);
-        //Then
-        assertThat(result, is(not(nullValue())));
-        assertThat(result instanceof String, is(true));
-        assertThat(result, is(equalTo(NOT_NUMERIC_OPERAND)));
-    }
-
-    @Test
-    public void controlEntryAndExistBusinessAndControllerMethods_withJoinPointProccesThrowingSomeRuntimeException_shouldReturnErrorResponse() throws Throwable {
-        //Given
-        when(joinPoint.proceed()).thenThrow(new RuntimeException());
-        //When
-        Object result = aspect.controlEntryAndExistBusinessAndControllerMethods(joinPoint);
-        //Then
-        assertThat(result, is(not(nullValue())));
-        assertThat(result instanceof String, is(true));
-        assertThat(result, is(equalTo(ERROR)));
     }
 }

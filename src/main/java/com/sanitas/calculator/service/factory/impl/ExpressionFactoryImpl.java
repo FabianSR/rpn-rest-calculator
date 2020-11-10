@@ -1,8 +1,8 @@
-package com.sanitas.calculator.service.factory.impl.bigdecimal;
+package com.sanitas.calculator.service.factory.impl;
 
 import com.sanitas.calculator.model.core.Expression;
-import com.sanitas.calculator.model.domain.bigdecimal.AddExpression;
-import com.sanitas.calculator.model.domain.bigdecimal.SubtractExpression;
+import com.sanitas.calculator.model.AddExpression;
+import com.sanitas.calculator.model.SubtractExpression;
 import com.sanitas.calculator.service.factory.ExpressionFactory;
 import com.sanitas.calculator.model.core.OperandExpression;
 

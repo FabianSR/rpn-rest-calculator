@@ -1,4 +1,4 @@
-package com.sanitas.calculator.model.domain.bigdecimal;
+package com.sanitas.calculator.model;
 
 import java.math.BigDecimal;
 
