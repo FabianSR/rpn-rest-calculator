@@ -7,7 +7,7 @@ import com.fabian.calculator.service.factory.ExpressionFactory;
 
 import static com.fabian.calculator.util.Constants.*;
 
-public class OtherExampleExpressionFactory implements ExpressionFactory<String, Long> {
+public class OtherExampleExpressionFactoryImpl implements ExpressionFactory<String, Long> {
 
     @Override
     public Expression<Long> getExpression(final String token) {

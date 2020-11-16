@@ -52,7 +52,7 @@ Usar SpringBoot para levantar la aplicación.
 Se expone un único endpoint para una petición POST aunque no realice cambios en el servidor hace posible enviar en el cuerpo del mensaje un json con la expresión compleja en lugar de pasarla como parámetro usando el verbo GET; se debe separar cada término con un espacio en blanco, excepto si se trata del signo del operando. Por ejemplo:
 
     curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "-3 2 6 - +"}'   http://localhost:8080/calculator/v1/evaluation
-La evalución devolverá un json con la expresión evaluada (que en notación algebraica quedaría como _-3+(2-6)_):
+La evalución devolverá un json con la expresión (en notación algebraica quedaría como _-3+(2-6)_):
 
     {
         "expression": "-7.0"
@@ -106,10 +106,17 @@ Esto combina perfectamente con el siguiente patrón utilizado, a saber, el patr�
 
 Esto desacopla el código de la lógica del servicio de la construcción de las operaciones y sus tipos (¡que además tienen un código muy simple gracias al patrón _template method_!).
 
+Una fabrica para _Long_ podría devolver la siguiente expresion para la suma:
+
     public class AddExpression extends AbstractBinaryOperation<Long> { //Que implementa Expression<T> a su vez
         protected Long execute(final Long a, final Long b) { return a+b;}
     }
 
+Y otra para BigDecimal:
+
+    public class AddExpression extends AbstractBinaryOperation<BigDecimal> {
+        protected BigDecimal execute(final BigDecimal a, final BigDecimal b) { return a.add(b,getPrecision());}
+    }
 
 La manera de seleccionar la factoría a utilizar se lleva a cabo en la clase de configuración del contexto de Spring _CalculatorConfig_ al iniciar la aplicación. No ha sido necesarío añadir una capa más de abstracción en la factoria ya que se ha asumido que solo se usará la familia de expresiones binarias; si por ejemplo se quisieran añadir otras familias de operaciones (unarias o funciones de más de dos operandos) validas para los posibles conjuntos numéricos (aplicando polimorfismo) sería interesante aplicar el patrón abstract factory.
 
@@ -130,7 +137,8 @@ con salida (recuerdese que la expresión equivaldría a _*3.27 - (2 - 6.15)*_):
     {"input":{"expression":"3.27 2 6.15 - -"},"evaluatedExpression":"7.42"}
 
 Por último, para el registro de trazas de log se ha utilizado el módulo de _Spring AOP_ para la programación orientada a aspectos y una clase _@RestControllerAdvice_ para el manejo de excepciones.
-Cuando un método hace varias cosas se dice que rompe el princpio de responsabilidad única y sugiere una mala encapsulación, que un método escriba una traza de log (o lleve a cabo la gestión de posibles errores o excepciones) aparte de ejecutar las instrucciones propias para las que fue pensado podría considerarse una excepción al tratarse de tareas transversales (aspectos) comunes a muchas clases que no pueden ser encapsuladas en otra y por tanto separada del sistema, pero en el fondo no deja de ser un problema en el diseño. Una posible solución  es utilizar el patrón de diseño proxy que básicamente es una clase cuyas instancias simulan ser objetos que realmente no son, es decir, tienen una referencia al objeto real (con la misma interfaz) pero controlan el acceso a sus métodos haciendo de intermediarios, por ejemplo:
+
+ Cuando un método hace varias cosas se dice que rompe el princpio de responsabilidad única y sugiere una mala encapsulación; que un método escriba una traza de log (o lleve a cabo la gestión de posibles errores o excepciones) aparte de ejecutar las instrucciones propias para las que fue pensado podría considerarse una excepción al tratarse de tareas transversales (aspectos) comunes a muchas clases que no pueden ser encapsuladas en otra y por tanto separada del sistema, pero en el fondo no deja de ser un problema en el diseño. Una posible solución es utilizar el patrón de diseño proxy que básicamente es una clase cuyas instancias simulan ser objetos que realmente no son, es decir, tienen una referencia interna al objeto real (con la misma interfaz, de manera que el cliente no lo diferencia) y controlan el acceso a sus métodos a través de la invocación a los suyos haciendo de intermediarios, por ejemplo:
 
     interface EjemploInterfaz{
         void metodo();
@@ -151,7 +159,7 @@ Cuando un método hace varias cosas se dice que rompe el princpio de responsabil
 
 Ocurre que crear un proxy para cada clase puede ser muy costoso. Se duplicaría el número de clases dentro del propio sistema y estas seguírian encapsulando mal la funcionalidad transversal dado que no es un solo proxy el encargado de escribir las trazas. Spring AoP ofrece una verdadera solución con la misma idea pero bien implementada.
 La tarea transversal encargada de escribir trazas puede ser encapsulada en una única clase que no modeliza un objeto sino un aspecto (anotacion @Aspect). Esta clase comprende los puntos de corte (@Pointcut) donde se definien que métodos del resto de clases deben interceptarse cuando se ejecuten (o justo antes, o justo después) y un metodo (@Advice) que contiene el código a ejecutar cuando esto pase.
-En este caso se ha establecido que para los métodos de fabricación de las operaciones se escriba una traza con la subcadena utilizada como parametro y el tipo de instancia generada y para los métodos de negocio, los parametros de sus metodos y el retorno de los mismos:
+En este caso se ha establecido que para los métodos de fabricación de las operaciones se escriba una traza con la subcadena utilizada como parametro y el tipo de instancia generada y para los métodos de negocio, los parametros y el retorno:
 
     result :: fabrication method: getExpression input token : 8 ; instance created: OperandExpression@2a9a11c0
     result :: fabrication method: getExpression input token : 2 ; instance created: OperandExpression@7d63eb62
