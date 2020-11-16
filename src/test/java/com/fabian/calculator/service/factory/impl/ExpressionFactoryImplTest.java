@@ -13,9 +13,6 @@ import static com.fabian.calculator.util.Constants.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-/**
- * Test for integers (bigDecimal)
- */
 public class ExpressionFactoryImplTest {
 
     private ExpressionFactory expressionFactory;
@@ -30,7 +27,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(isCorrectInstance(SUM_SIGN, AddExpression.class), is(true));
+        checkObjectInstance(SUM_SIGN, AddExpression.class);
     }
 
     @Test
@@ -38,7 +35,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(isCorrectInstance(MINUS_SIGN, SubtractExpression.class),is(true));
+        checkObjectInstance(MINUS_SIGN, SubtractExpression.class);
     }
 
     @Test
@@ -46,7 +43,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(isCorrectInstance(MULTI_SIGN, MultiplyExpression.class),is(true));
+        checkObjectInstance(MULTI_SIGN, MultiplyExpression.class);
     }
 
     @Test
@@ -54,7 +51,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(isCorrectInstance(DIV_SIGN, DivideExpression.class),is(true));
+        checkObjectInstance(DIV_SIGN, DivideExpression.class);
     }
 
     @Test
@@ -62,11 +59,10 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        assertThat(isCorrectInstance("7", OperandExpression.class),is(true));
-
+        checkObjectInstance("7",OperandExpression.class);
     }
 
-    private <T> boolean isCorrectInstance(final String sign, Class<T> clazz) {
-        return clazz.isInstance(expressionFactory.getExpression(sign));
+    private <T> void checkObjectInstance(final String sign, Class<T> clazz){
+        assertThat(clazz.isInstance(expressionFactory.getExpression(sign)),is(true));
     }
 }
