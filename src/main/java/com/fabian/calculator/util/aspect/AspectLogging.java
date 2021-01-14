@@ -16,12 +16,12 @@ import static java.util.stream.Collectors.joining;
 @Aspect
 public class AspectLogging {
 
-    @Around("execution(* com.sanitas.calculator.service.impl.*.*(..))")
+    @Around("execution(* com.fabian.calculator.service.impl.*.*(..))")
     public Object controlEntryAndExistBusinessMethods(final ProceedingJoinPoint joinPoint) throws Throwable{
         return printLog("business method : %s; input : %s ; response: %s", joinPoint);
     }
 
-    @Around("execution(* com.sanitas.calculator.service.factory.impl.*.*(..))")
+    @Around("execution(* com.fabian.calculator.service.factory.impl.*.*(..))")
     public Object printFabricationMethdos(final ProceedingJoinPoint joinPoint) throws Throwable {
         return printLog("fabrication method: %s input token : %s ; instance created: %s", joinPoint);
     }
