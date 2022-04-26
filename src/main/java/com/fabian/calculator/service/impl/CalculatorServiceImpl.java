@@ -9,10 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.of;
 
+/**
+ * Calculator
+ * @autor FabianSR
+ */
 @Service
 public class CalculatorServiceImpl implements CalculatorService {
 
@@ -43,7 +48,6 @@ public class CalculatorServiceImpl implements CalculatorService {
     private String evaluate(final List<Expression> parsedExpressions) {
         final Stack<Number> contextResults = new Stack<>();
         parsedExpressions.forEach(e -> e.interpret(contextResults));
-        if(contextResults.size()>1) throw new EmptyStackException();
-        return contextResults.pop().toString();
+        return Optional.of(contextResults).filter(cr->cr.size()==1).map(Stack::pop).map(Number::toString).orElseThrow(EmptyStackException::new);
     }
 }

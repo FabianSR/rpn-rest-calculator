@@ -29,7 +29,7 @@ public class CalculatorControllerTest {
     @Test
     public void calculate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(calculatorService.process(anyString())).thenReturn("5");
+        when(calculatorService.process("2 3 +")).thenReturn("5");
         Input in = new Input();
         in.setExpression("2 3 +");
         //When

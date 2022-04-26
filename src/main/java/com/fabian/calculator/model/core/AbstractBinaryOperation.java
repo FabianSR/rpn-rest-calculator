@@ -3,7 +3,7 @@ package com.fabian.calculator.model.core;
 import java.util.Stack;
 
 /**
- * Template Method parttern
+ * Template Method pattern
  * @autor FabianSR
  */
 public abstract class AbstractBinaryOperation<T extends Number> implements Expression<T> {
@@ -18,8 +18,8 @@ public abstract class AbstractBinaryOperation<T extends Number> implements Expre
      */
     @Override
     public final void interpret(final Stack<T> context) {
-        final T tmp = (T) context.pop();
-        context.push(execute(((T)context.pop()),tmp));
+        final T tmp = context.pop();
+        context.push(execute(context.pop(),tmp));
     }
 
     /**

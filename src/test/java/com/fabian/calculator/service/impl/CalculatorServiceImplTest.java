@@ -1,11 +1,11 @@
 package com.fabian.calculator.service.impl;
 
 
-import com.fabian.calculator.model.core.OperandExpression;
-import com.fabian.calculator.util.Constants;
 import com.fabian.calculator.model.AddExpression;
 import com.fabian.calculator.model.SubtractExpression;
+import com.fabian.calculator.model.core.OperandExpression;
 import com.fabian.calculator.service.factory.ExpressionFactory;
+import com.fabian.calculator.util.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -33,15 +33,15 @@ public class CalculatorServiceImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        IntStream.range(0,10).boxed().forEach(s->{
-            when(expressionFactory.getExpression(s.toString())).thenReturn( new OperandExpression(BigDecimal.valueOf(s)));
+        IntStream.range(0, 10).boxed().forEach(s -> {
+            when(expressionFactory.getExpression(s.toString())).thenReturn(new OperandExpression(BigDecimal.valueOf(s)));
         });
     }
 
     @Test
     public void evaluate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn( new AddExpression());
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
         //When
         String result = calculatorService.process("2 3 +");
         //Then
@@ -75,13 +75,13 @@ public class CalculatorServiceImplTest {
         // 2 3 + 8 - 5 2 + + -> (2+3-8)+(5+2)
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
-         //When
+        //When
         String result = calculatorService.process("2 3 + 8 - 5 2 + +");
         //Then
         assertThat(result, is(equalTo("4")));
     }
 
-    @Test(expected= EmptyStackException.class)
+    @Test(expected = EmptyStackException.class)
     public void evaluate_combinedExpressionWithIncorrectNumberOfOperations_shouldThrowEmptyStackException() {
         //Given
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
@@ -90,11 +90,10 @@ public class CalculatorServiceImplTest {
         calculatorService.process("2 3 + 8 - 5 2 + + +");
     }
 
-    @Test(expected= NullPointerException.class)
-    public void evaluate_combinedExpressionWithIncorrectCharacters_shouldThrowNullPointerException() {
+    @Test(expected = NumberFormatException.class)
+    public void evaluate_combinedExpressionWithIncorrectCharacters_shouldThrowNumberFormatException() {
         //Given
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        when(expressionFactory.getExpression("?")).thenThrow(new NumberFormatException());
         //When //Then
         calculatorService.process("2 ?");
     }

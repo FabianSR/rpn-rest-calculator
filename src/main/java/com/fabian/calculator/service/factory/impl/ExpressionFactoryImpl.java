@@ -22,12 +22,12 @@ public class ExpressionFactoryImpl implements ExpressionFactory<String, BigDecim
 
     @Override
     public Expression<BigDecimal> getExpression(final String token) {
-        switch (token) {
-            case SUM_SIGN: return new AddExpression();
-            case MINUS_SIGN: return new SubtractExpression();
-            case MULTI_SIGN: return new MultiplyExpression();
-            case DIV_SIGN: return new DivideExpression();
-            default: return new OperandExpression(BigDecimal.valueOf(Double.valueOf(token)));
-        }
+        return switch (token) {
+            case SUM_SIGN -> new AddExpression();
+            case MINUS_SIGN -> new SubtractExpression();
+            case MULTI_SIGN -> new MultiplyExpression();
+            case DIV_SIGN -> new DivideExpression();
+            default -> new OperandExpression(BigDecimal.valueOf(Double.valueOf(token)));
+        };
     }
 }

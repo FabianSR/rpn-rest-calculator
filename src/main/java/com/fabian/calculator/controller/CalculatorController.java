@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @autor FabianSR
@@ -26,7 +25,7 @@ public class CalculatorController {
         this.calculatorService = calculatorService;
     }
 
-    @RequestMapping(value = VERSION+"/evaluation", method = POST)
+    @PostMapping(VERSION+"/evaluation")
     public Output calculate(final @RequestBody Input input){
         return new Output(calculatorService.process(input.getExpression().trim()));
     }

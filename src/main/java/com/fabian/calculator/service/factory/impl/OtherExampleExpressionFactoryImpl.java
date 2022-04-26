@@ -11,13 +11,13 @@ public class OtherExampleExpressionFactoryImpl implements ExpressionFactory<Stri
 
     @Override
     public Expression<Long> getExpression(final String token) {
-        switch (token) {
-            case SUM_SIGN: return new AddExpression();
-            case MINUS_SIGN: return new SubtractExpression();
-            case MULTI_SIGN: return new MultiplyExpression();
-            case DIV_SIGN: return new DivideExpression();
-            default: return new OperandExpression(Long.valueOf(token));
-        }
+        return switch (token) {
+            case SUM_SIGN -> new AddExpression();
+            case MINUS_SIGN -> new SubtractExpression();
+            case MULTI_SIGN -> new MultiplyExpression();
+            case DIV_SIGN -> new DivideExpression();
+            default -> new OperandExpression(Long.valueOf(token));
+        };
     }
 }
 
