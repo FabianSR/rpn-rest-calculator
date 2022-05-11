@@ -2,7 +2,6 @@ package com.fabian.calculator;
 
 import com.fabian.calculator.service.factory.ExpressionFactory;
 import com.fabian.calculator.service.factory.impl.ExpressionFactoryImpl;
-//import com.fabian.calculator.service.factory.impl.OtherExampleExpressionFactoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,7 +18,7 @@ public class CalculatorConfig {
      */
     @Bean
     public ExpressionFactory getExpressionFactory() {
-        //Test to change to new OtherExampleExpressionFactoryImpl()
+        //Test to change to new com.fabian.calculator.service.factory.impl.OtherExampleExpressionFactoryImpl.OtherExampleExpressionFactoryImpl();
         //It is very fun, you will see that to apply the SOLID principles works!!!
         return new ExpressionFactoryImpl();
 

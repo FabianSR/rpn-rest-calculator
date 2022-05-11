@@ -1,11 +1,8 @@
 package com.fabian.calculator.service.factory.impl;
 
-import com.fabian.calculator.model.AddExpression;
-import com.fabian.calculator.model.DivideExpression;
-import com.fabian.calculator.model.MultiplyExpression;
-import com.fabian.calculator.model.SubtractExpression;
 import com.fabian.calculator.model.core.Expression;
 import com.fabian.calculator.model.core.OperandExpression;
+import com.fabian.calculator.model.core.OperationExpression;
 import com.fabian.calculator.service.factory.ExpressionFactory;
 
 import java.math.BigDecimal;
@@ -23,10 +20,10 @@ public class ExpressionFactoryImpl implements ExpressionFactory<String, BigDecim
     @Override
     public Expression<BigDecimal> getExpression(final String token) {
         return switch (token) {
-            case SUM_SIGN -> new AddExpression();
-            case MINUS_SIGN -> new SubtractExpression();
-            case MULTI_SIGN -> new MultiplyExpression();
-            case DIV_SIGN -> new DivideExpression();
+            case SUM_SIGN -> (OperationExpression<BigDecimal>) (a, b) -> a.add(b);
+            case MINUS_SIGN -> (OperationExpression<BigDecimal>) (a, b) -> a.subtract(b);
+            case MULTI_SIGN -> (OperationExpression<BigDecimal>) (a, b) -> a.multiply(b);
+            case DIV_SIGN -> (OperationExpression<BigDecimal>) (a, b) -> a.divide(b);
             default -> new OperandExpression(BigDecimal.valueOf(Double.valueOf(token)));
         };
     }

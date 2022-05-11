@@ -1,9 +1,8 @@
 package com.fabian.calculator.service.impl;
 
 
-import com.fabian.calculator.model.AddExpression;
-import com.fabian.calculator.model.SubtractExpression;
 import com.fabian.calculator.model.core.OperandExpression;
+import com.fabian.calculator.model.core.OperationExpression;
 import com.fabian.calculator.service.factory.ExpressionFactory;
 import com.fabian.calculator.util.Constants;
 import org.junit.Before;
@@ -34,14 +33,15 @@ public class CalculatorServiceImplTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         IntStream.range(0, 10).boxed().forEach(s -> {
-            when(expressionFactory.getExpression(s.toString())).thenReturn(new OperandExpression(BigDecimal.valueOf(s)));
+            when(expressionFactory.getExpression(s.toString())).thenReturn(new OperandExpression(Long.valueOf(s)));
         });
     }
 
     @Test
     public void evaluate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
+        OperationExpression<Long> addExpression = (a, b) -> a + b;
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
         //When
         String result = calculatorService.process("2 3 +");
         //Then
@@ -51,7 +51,8 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_expressionactWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        OperationExpression<Long> subtractExpression = (a, b) -> a - b;
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When
         String result = calculatorService.process("2 3 -");
         //Then
@@ -61,8 +62,10 @@ public class CalculatorServiceImplTest {
     @Test
     public void evaluate_combinedAddAndSubtractExpressionWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        OperationExpression<Long> addExpression = (a, b) -> a + b;
+        OperationExpression<Long> subtractExpression = (a, b) -> a - b;
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When
         String result = calculatorService.process("2 3 + 8 -");
         //Then
@@ -73,8 +76,10 @@ public class CalculatorServiceImplTest {
     public void evaluate_combinedExpressionWithOperands_shouldReturnResultEvaluation() {
         //Given
         // 2 3 + 8 - 5 2 + + -> (2+3-8)+(5+2)
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        OperationExpression<Long> addExpression = (a, b) -> a + b;
+        OperationExpression<Long> subtractExpression = (a, b) -> a - b;
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When
         String result = calculatorService.process("2 3 + 8 - 5 2 + +");
         //Then
@@ -84,8 +89,10 @@ public class CalculatorServiceImplTest {
     @Test(expected = EmptyStackException.class)
     public void evaluate_combinedExpressionWithIncorrectNumberOfOperations_shouldThrowEmptyStackException() {
         //Given
-        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(new AddExpression());
-        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(new SubtractExpression());
+        OperationExpression<Long> addExpression = (a, b) -> a + b;
+        OperationExpression<Long> subtractExpression = (a, b) -> a - b;
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
+        when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When //Then
         calculatorService.process("2 3 + 8 - 5 2 + + +");
     }
@@ -96,5 +103,18 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpression("?")).thenThrow(new NumberFormatException());
         //When //Then
         calculatorService.process("2 ?");
+    }
+
+    @Test
+    public void evaluate_expressionAddWithBigDecimalOperands_shouldReturnResultEvaluation() {
+        //Given
+        OperationExpression<BigDecimal> addExpression = (a, b) -> a.add(b);
+        when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
+        when(expressionFactory.getExpression("2.0")).thenReturn(new OperandExpression(BigDecimal.valueOf(Double.valueOf("2.0"))));
+        when(expressionFactory.getExpression("3")).thenReturn(new OperandExpression(BigDecimal.valueOf(Double.valueOf("3"))));
+        //When
+        String result = calculatorService.process("2.0 3 +");
+        //Then
+        assertThat(result, is(equalTo("5.0")));
     }
 }

@@ -1,12 +1,13 @@
 package com.fabian.calculator.model.core;
 
 import java.util.Stack;
-
 /**
- * Template Method pattern
+ * Template method pattern
+ * @param <T>
  * @autor FabianSR
  */
-public abstract class AbstractBinaryOperation<T extends Number> implements Expression<T> {
+@FunctionalInterface
+public interface OperationExpression<T extends Number> extends Expression<T>{
 
     /**
      * This pulls the two operands (from the stack) on which the operator will execute.
@@ -14,17 +15,17 @@ public abstract class AbstractBinaryOperation<T extends Number> implements Expre
      * since there are operations that do not fulfill the commutative property.
      * The result that could be used as an operand if there is a composition
      * of operations is saved on the same stack.
+     *
      * @param context
      */
-    @Override
-    public final void interpret(final Stack<T> context) {
+    default void interpret(final Stack<T> context) {
         final T tmp = context.pop();
-        context.push(execute(context.pop(),tmp));
+        context.push(execute(context.pop(), tmp));
     }
 
     /**
      * Applies the operator corresponding to the operands' a 'and 'b'.
      * Each concrete implementation corresponds to an operation.
      */
-    protected abstract T execute(final T a, final T b);
+    T execute(final T a, final T b);
 }

@@ -35,7 +35,7 @@ public class CalculatorServiceImpl implements CalculatorService {
      */
     @Override
     public String process(final String input) {
-        return evaluate(of(input.split(Constants.BLANK_STR)).map(s-> expressionFactory.getExpression(s)).collect(toList()));
+        return evaluate(of(input.split(Constants.BLANK_STR)).map(s-> expressionFactory.getExpression(s)).collect(toList()),new Stack<>());
     }
 
     /**
@@ -45,9 +45,8 @@ public class CalculatorServiceImpl implements CalculatorService {
      * @param parsedExpressions
      * @return
      */
-    private String evaluate(final List<Expression> parsedExpressions) {
-        final Stack<Number> contextResults = new Stack<>();
+    private String evaluate(final List<Expression> parsedExpressions, final Stack<? extends Number> contextResults) {
         parsedExpressions.forEach(e -> e.interpret(contextResults));
-        return Optional.of(contextResults).filter(cr->cr.size()==1).map(Stack::pop).map(Number::toString).orElseThrow(EmptyStackException::new);
+        return Optional.of(contextResults).filter(cr -> cr.size() == 1).map(Stack::pop).map(Number::toString).orElseThrow(EmptyStackException::new);
     }
 }

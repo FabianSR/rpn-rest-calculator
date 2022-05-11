@@ -1,10 +1,8 @@
 package com.fabian.calculator.service.factory.impl;
 
-import com.fabian.calculator.model.AddExpression;
-import com.fabian.calculator.model.DivideExpression;
-import com.fabian.calculator.model.MultiplyExpression;
-import com.fabian.calculator.model.SubtractExpression;
+import com.fabian.calculator.model.core.Expression;
 import com.fabian.calculator.model.core.OperandExpression;
+import com.fabian.calculator.model.core.OperationExpression;
 import com.fabian.calculator.service.factory.ExpressionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +25,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        checkObjectInstance(SUM_SIGN, AddExpression.class);
+        checkObjectInstance(SUM_SIGN, OperationExpression.class);
     }
 
     @Test
@@ -35,7 +33,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        checkObjectInstance(MINUS_SIGN, SubtractExpression.class);
+        checkObjectInstance(MINUS_SIGN, OperationExpression.class);
     }
 
     @Test
@@ -43,7 +41,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        checkObjectInstance(MULTI_SIGN, MultiplyExpression.class);
+        checkObjectInstance(MULTI_SIGN, OperationExpression.class);
     }
 
     @Test
@@ -51,7 +49,7 @@ public class ExpressionFactoryImplTest {
         //Given
         //When
         //Then
-        checkObjectInstance(DIV_SIGN, DivideExpression.class);
+        checkObjectInstance(DIV_SIGN, OperationExpression.class);
     }
 
     @Test

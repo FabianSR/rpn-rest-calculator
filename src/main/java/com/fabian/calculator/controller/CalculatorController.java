@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping(value="/calculator")
 public class CalculatorController {
 
-    private static final String VERSION="/v1";
+    private static final String VERSION="/v2";
 
     private final CalculatorService calculatorService;
 

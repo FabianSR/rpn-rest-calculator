@@ -51,7 +51,7 @@ Usar SpringBoot para levantar la aplicación.
     mvn spring-boot:run
 Se expone un único endpoint para una petición _POST_ aunque no realice cambios en el servidor hace posible enviar en el cuerpo del mensaje un json con la expresión compleja en lugar de pasarla como parámetro usando el verbo _GET_; se debe separar cada término con un espacio en blanco, excepto si se trata del signo del operando. Por ejemplo:
 
-    curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "-3 2 6 - +"}'   http://localhost:8080/calculator/v1/evaluation
+    curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "-3 2 6 - +"}'   http://localhost:8080/calculator/v2/evaluation
 La evaluación devolverá un json con la expresión (en notación algebraica quedaría como _-3+(2-6)_):
 
     {
@@ -70,11 +70,11 @@ Si después de las evaluaciones queda más de un operando en la pila se consider
 Si con todo, se produce alguna otra excepción se devolverá un código 500 (internal service error) con el mensaje
 
     ERROR
-## Arquitectura
+## Arquitectura (Texto obsoleto; se ha modificado para que las factorías devuelvan la expresión lambda que implementa la función a ejecutar, muchas de las clases del diagrama ya no existen)
 
 ###Resumen:
 
-La aplicación puede evaluar una cadena  que representa una expresión o una composición de estas analizándola gramaticalmente y descomponiéndola en expresiones que pueden manejarse computacionalmente (patrón interpreter), estas pueden ser operaciones u operandos; los operandos (o expresiones terminales) se interpretan como valores numéricos y son almacenados en una pila, y las operaciones se interpretan sacando de la pila los operandos y aplicando el operador java correspondiente, el valor obtenido se vuelve a apilar. El último valor apilado corresponde con el resultado.
+La aplicación puede evaluar una cadena que representa una expresión o una composición de estas analizándola gramaticalmente y descomponiéndola en expresiones que pueden manejarse computacionalmente (patrón interpreter), estas pueden ser operaciones u operandos; los operandos (o expresiones terminales) se interpretan como valores numéricos y son almacenados en una pila, y las operaciones se interpretan sacando de la pila los operandos y aplicando el operador java correspondiente, el valor obtenido se vuelve a apilar. El último valor apilado corresponde con el resultado.
 Se ha creado una factoría para la construcción de las expresiones de manera que sea sencillo cambiar los tipos (sistemas numéricos) y añadir nuevas operaciones sin necesidad de hacer ningún otro cambio en el código (patrón factory).
 El control de errores y logging se lleva a cabo mediante aspectos para mantener la encapsulación de las clases y su simplicidad evitando incluir tareas transversales en su código.
 
@@ -130,7 +130,7 @@ La manera de seleccionar la factoría a utilizar se lleva a cabo en la clase de 
 
 Si se selecciona la factoría para BigDecimal (_ExpressionFactoryImpl_) la entrada puede ser por ejemplo:
 
-    curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "3.27 2 6.15 - -"}'   http://localhost:8080/calculator/v1/evaluation
+    curl --header "Content-Type: application/json"   --request POST   --data '{"expression": "3.27 2 6.15 - -"}'   http://localhost:8080/calculator/v2/evaluation
 
 con salida (recuérdese que la expresión equivaldría a _*3.27 - (2 - 6.15)*_):
 
@@ -173,7 +173,7 @@ El patrón singleton es muy sencillo, se declara el constructor de la clase con 
 además se implementa un metodo estático que se encarga de devolver la referencia anterior (si esta no apunta a un objeto creado, lo creará antes).
 Esta construcción bajo demanda tiene el problema de que cuando aun no se ha instanciado el objeto varios hilos de ejecución
 podrían solicitarlo al mismo tiempo, obteniendo un objeto diferente entre ellos. Para evitar esto se protege el método de construcción con la palabra reservada
-_synchronized_ permitiendo que solo un hilo entre en este método bloqueando el resto hasta sale de él.
+_synchronized_ permitiendo que solo un hilo entre en este método bloqueando el resto hasta que sale de él.
 Ocurre que dentro del mismo es necesario volver a evaluar si la instancia se ha creado porque puede que otro hilo
 este a la espera de entrar en el mismo método (volvería a crear la instancia). No conviene sincronizar todo el método por el que se obtiene
 la instancia (_getLoggerInstance_) dado que este requiere muchos recursos para proteger su acceso y el problema solo ocurre la primera vez que se solicita.
