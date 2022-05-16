@@ -27,6 +27,6 @@ public class CalculatorController {
 
     @PostMapping(VERSION+"/evaluation")
     public Output calculate(final @RequestBody Input input){
-        return new Output(calculatorService.process(input.getExpression().trim()));
+        return new Output(calculatorService.evaluate(input.getExpression().trim()));
     }
 }

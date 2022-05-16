@@ -29,7 +29,7 @@ public class CalculatorControllerTest {
     @Test
     public void calculate_expressionAddWithOperands_shouldReturnResultEvaluation() {
         //Given
-        when(calculatorService.process("2 3 +")).thenReturn("5");
+        when(calculatorService.evaluate("2 3 +")).thenReturn("5");
         Input in = new Input();
         in.setExpression("2 3 +");
         //When
@@ -37,6 +37,6 @@ public class CalculatorControllerTest {
         //Then
         assertThat(result, notNullValue());
         assertThat(result.getExpression(), is(equalTo("5")));
-        verify(calculatorService, times(1)).process("2 3 +");
+        verify(calculatorService, times(1)).evaluate("2 3 +");
     }
 }

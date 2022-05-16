@@ -43,7 +43,7 @@ public class CalculatorServiceImplTest {
         OperationExpression<Long> addExpression = (a, b) -> a + b;
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
         //When
-        String result = calculatorService.process("2 3 +");
+        String result = calculatorService.evaluate("2 3 +");
         //Then
         assertThat(result, is(equalTo("5")));
     }
@@ -54,7 +54,7 @@ public class CalculatorServiceImplTest {
         OperationExpression<Long> subtractExpression = (a, b) -> a - b;
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When
-        String result = calculatorService.process("2 3 -");
+        String result = calculatorService.evaluate("2 3 -");
         //Then
         assertThat(result, is(equalTo("-1")));
     }
@@ -67,7 +67,7 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When
-        String result = calculatorService.process("2 3 + 8 -");
+        String result = calculatorService.evaluate("2 3 + 8 -");
         //Then
         assertThat(result, is(equalTo("-3")));
     }
@@ -81,7 +81,7 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When
-        String result = calculatorService.process("2 3 + 8 - 5 2 + +");
+        String result = calculatorService.evaluate("2 3 + 8 - 5 2 + +");
         //Then
         assertThat(result, is(equalTo("4")));
     }
@@ -94,7 +94,7 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpression(Constants.SUM_SIGN)).thenReturn(addExpression);
         when(expressionFactory.getExpression(Constants.MINUS_SIGN)).thenReturn(subtractExpression);
         //When //Then
-        calculatorService.process("2 3 + 8 - 5 2 + + +");
+        calculatorService.evaluate("2 3 + 8 - 5 2 + + +");
     }
 
     @Test(expected = NumberFormatException.class)
@@ -102,7 +102,7 @@ public class CalculatorServiceImplTest {
         //Given
         when(expressionFactory.getExpression("?")).thenThrow(new NumberFormatException());
         //When //Then
-        calculatorService.process("2 ?");
+        calculatorService.evaluate("2 ?");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class CalculatorServiceImplTest {
         when(expressionFactory.getExpression("2.0")).thenReturn(new OperandExpression(BigDecimal.valueOf(Double.valueOf("2.0"))));
         when(expressionFactory.getExpression("3")).thenReturn(new OperandExpression(BigDecimal.valueOf(Double.valueOf("3"))));
         //When
-        String result = calculatorService.process("2.0 3 +");
+        String result = calculatorService.evaluate("2.0 3 +");
         //Then
         assertThat(result, is(equalTo("5.0")));
     }
